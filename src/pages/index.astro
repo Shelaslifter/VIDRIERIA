@@ -2,8 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import Stats from '../components/Stats.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
 import Services from '../components/Services.astro';
 import Gallery from '../components/Gallery.astro';
+import Testimonials from '../components/Testimonials.astro';
+import FAQ from '../components/FAQ.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 
@@ -11,9 +16,30 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
   <Navbar />
   
   <main>
-    <Hero />
-    <Services />
-    <Gallery />
+    <div data-aos="fade-up">
+      <Hero />
+    </div>
+    <div data-aos="fade-up" data-aos-delay="50">
+      <Features />
+    </div>
+    <div data-aos="fade-up">
+      <Stats />
+    </div>
+    <div data-aos="fade-up">
+      <BeforeAfter />
+    </div>
+    <div data-aos="fade-up" data-aos-delay="100">
+      <Services />
+    </div>
+    <div data-aos="fade-up" data-aos-delay="150">
+      <Gallery />
+    </div>
+    <div data-aos="fade-up">
+      <Testimonials />
+    </div>
+    <div data-aos="fade-up">
+      <FAQ />
+    </div>
   </main>
   
   <footer class="bg-slate-950 py-12 text-center text-slate-400 border-t border-slate-800">

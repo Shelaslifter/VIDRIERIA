@@ -1,0 +1,69 @@
+---
+// FAQ.astro
+const faqs = [
+  {
+    question: "¿Cuánto tiempo tarda la instalación de cancelería?",
+    answer: "El tiempo de instalación depende de la magnitud del proyecto. Generalmente, para canceles de baño o ventanas estándar, el proceso toma de 1 a 2 días hábiles una vez fabricado el cristal (lo cual toma entre 5 y 7 días)."
+  },
+  {
+    question: "¿Ofrecen garantía en el vidrio templado?",
+    answer: "Sí, todos nuestros cristales templados cuentan con garantía contra defectos de fabricación. Además, ofrecemos garantía en la instalación y sellado para asegurar que no haya filtraciones."
+  },
+  {
+    question: "¿Manejan pagos con tarjeta o meses sin intereses?",
+    answer: "Aceptamos pagos en efectivo, transferencias bancarias y tarjetas de crédito/débito. Constantemente tenemos promociones de meses sin intereses con tarjetas participantes, ¡pregunta a tu asesor!"
+  },
+  {
+    question: "¿Pueden hacer diseños a medida o fuera de lo común?",
+    answer: "¡Por supuesto! Somos especialistas en proyectos personalizados. Si tienes un diseño especial para un domo, barandal o fachada, nosotros lo calculamos, diseñamos y lo hacemos realidad."
+  }
+];
+---
+
+<section id="faq" class="py-24 relative z-10">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-base text-cyan-600 font-semibold tracking-wide uppercase">Dudas Comunes</h2>
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        Preguntas Frecuentes
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      {faqs.map((faq) => (
+        <details class="group bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold text-slate-900 bg-white hover:bg-slate-50 transition-colors">
+            <span class="text-lg">{faq.question}</span>
+            <span class="ml-6 flex-shrink-0 transition-transform duration-300 group-open:-rotate-180">
+              <svg class="w-6 h-6 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <div class="p-6 pt-0 text-slate-600 bg-white">
+            <p class="leading-relaxed border-t border-slate-100 pt-4 mt-2">
+              {faq.answer}
+            </p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Smooth animation for details */
+  details[open] summary ~ * {
+    animation: slideDown 0.3s ease-out;
+  }
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

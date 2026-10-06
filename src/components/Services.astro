@@ -19,9 +19,9 @@ const services = [
 ];
 ---
 
-<section id="servicios" class="py-24 bg-slate-50">
+<section id="servicios" class="py-24 relative z-10">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+    <div class="text-center max-w-3xl mx-auto mb-16">
       <h2 class="text-base text-cyan-600 font-semibold tracking-wide uppercase">Nuestros Servicios</h2>
       <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
         Soluciones integrales en cristal y aluminio
@@ -33,7 +33,7 @@ const services = [
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       {services.map((service, index) => (
-        <div class={`bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-xl transition-shadow duration-300 group reveal ${index === 0 ? '' : index === 1 ? 'reveal-delay-100' : 'reveal-delay-200'}`}>
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 group">
           <div class="w-16 h-16 bg-cyan-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
             <Fragment set:html={service.icon} />
           </div>

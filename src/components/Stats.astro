@@ -1,0 +1,69 @@
+---
+// Stats.astro
+const stats = [
+  { value: 10, suffix: "+", label: "Años de Experiencia" },
+  { value: 500, suffix: "+", label: "Proyectos Entregados" },
+  { value: 100, suffix: "%", label: "Clientes Satisfechos" },
+  { value: 50, suffix: "+", label: "Empresas confían en nosotros" }
+];
+---
+
+<section class="py-20 bg-slate-900 relative overflow-hidden border-t border-b border-cyan-900/30">
+  <!-- Decorative background -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10 grayscale"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" id="stats-container">
+      {stats.map((stat) => (
+        <div class="p-4">
+          <div class="flex items-center justify-center text-4xl md:text-5xl font-extrabold text-white mb-2">
+            <span class="stat-value" data-target={stat.value}>0</span>
+            <span class="text-cyan-400">{stat.suffix}</span>
+          </div>
+          <p class="text-slate-400 text-sm md:text-base font-medium uppercase tracking-wider">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const statsSection = document.getElementById('stats-container');
+  const statValues = document.querySelectorAll('.stat-value');
+  let animated = false;
+
+  const animateNumbers = () => {
+    statValues.forEach(value => {
+      const target = +value.getAttribute('data-target')!;
+      const duration = 2000; // 2 seconds
+      const increment = target / (duration / 16); // 60fps
+      let current = 0;
+
+      const updateCounter = () => {
+        current += increment;
+        if (current < target) {
+          value.textContent = Math.ceil(current).toString();
+          requestAnimationFrame(updateCounter);
+        } else {
+          value.textContent = target.toString();
+        }
+      };
+      
+      updateCounter();
+    });
+  };
+
+  if (statsSection) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !animated) {
+        animated = true;
+        animateNumbers();
+      }
+    }, { threshold: 0.5 });
+
+    observer.observe(statsSection);
+  }
+</script>

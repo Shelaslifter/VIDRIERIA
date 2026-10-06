@@ -1,20 +1,24 @@
 ---
 // Hero.astro
+import { Image } from 'astro:assets';
 ---
 
-<section id="inicio" class="relative h-screen min-h-[600px] flex items-center justify-center pt-20">
-  <!-- Background Image with Overlay -->
-  <div class="absolute inset-0 z-0">
-    <img 
+<section id="inicio" class="relative h-screen min-h-[600px] flex items-center justify-center pt-20 overflow-hidden">
+  <!-- Background Image with Ken Burns Animation -->
+  <div class="absolute inset-0 z-0 bg-slate-900">
+    <Image 
       src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" 
       alt="Fachada moderna con vidrio" 
-      class="w-full h-full object-cover object-center"
+      width={2070}
+      height={1380}
+      class="w-full h-full object-cover object-center animate-ken-burns"
     />
-    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px]"></div>
+    <!-- Overlay oscuro -->
+    <div class="absolute inset-0 bg-slate-900/70"></div>
   </div>
 
   <!-- Content -->
-  <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto mt-10 reveal">
+  <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto mt-10">
     <span class="inline-block py-1 px-3 rounded-full bg-cyan-500/20 text-cyan-300 text-sm font-semibold tracking-wider mb-4 border border-cyan-500/30 backdrop-blur-sm">CALIDAD PREMIUM</span>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
       Transparencia y Elegancia <br class="hidden sm:block" />para tus Espacios
