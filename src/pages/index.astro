@@ -1,17 +1,31 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Gallery from '../components/Gallery.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="VIDRIERIA - Vidrio Templado y Aluminio">
+  <Navbar />
+  
+  <main>
+    <Hero />
+    <Services />
+    <Gallery />
+  </main>
+  
+  <footer class="bg-slate-950 py-12 text-center text-slate-400 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="mb-6 flex justify-center">
+        <span class="text-2xl font-bold tracking-tighter text-white">
+          VIDRIE<span class="text-cyan-600">RIA</span>
+        </span>
+      </div>
+      <p>&copy; {new Date().getFullYear()} VIDRIERIA. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <WhatsAppButton />
+</Layout>

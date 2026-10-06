@@ -1,0 +1,48 @@
+---
+// Services.astro
+const services = [
+  {
+    title: "Fabricación",
+    description: "Diseño y manufactura a medida de cristal templado y aluminio para adaptarse perfectamente a las necesidades de tu proyecto.",
+    icon: `<svg class="w-8 h-8 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>`
+  },
+  {
+    title: "Instalación",
+    description: "Proceso en sitio con altos estándares de seguridad, garantizando acabados impecables y duraderos en cada trabajo.",
+    icon: `<svg class="w-8 h-8 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>`
+  },
+  {
+    title: "Mantenimiento",
+    description: "Reparaciones, ajustes de cancelería, reemplazo de herrajes y sellado para prolongar la vida útil de tus instalaciones.",
+    icon: `<svg class="w-8 h-8 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>`
+  }
+];
+---
+
+<section id="servicios" class="py-24 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+      <h2 class="text-base text-cyan-600 font-semibold tracking-wide uppercase">Nuestros Servicios</h2>
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        Soluciones integrales en cristal y aluminio
+      </p>
+      <p class="mt-4 max-w-2xl text-xl text-slate-500 mx-auto">
+        Brindamos un servicio completo desde la concepción de la idea hasta el mantenimiento de sus instalaciones.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {services.map((service, index) => (
+        <div class={`bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-xl transition-shadow duration-300 group reveal ${index === 0 ? '' : index === 1 ? 'reveal-delay-100' : 'reveal-delay-200'}`}>
+          <div class="w-16 h-16 bg-cyan-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <Fragment set:html={service.icon} />
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
+          <p class="text-slate-600 leading-relaxed">
+            {service.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,68 @@
+---
+// Navbar.astro
+---
+
+<header class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/70 backdrop-blur-md border-b border-white/20 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="text-2xl font-bold tracking-tighter text-slate-900">
+          VIDRIE<span class="text-cyan-600">RIA</span>
+        </a>
+      </div>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex space-x-8">
+        <a href="/#inicio" class="text-slate-600 hover:text-cyan-600 px-3 py-2 text-sm font-medium transition-colors">Inicio</a>
+        <a href="/#servicios" class="text-slate-600 hover:text-cyan-600 px-3 py-2 text-sm font-medium transition-colors">Servicios</a>
+        <a href="/#proyectos" class="text-slate-600 hover:text-cyan-600 px-3 py-2 text-sm font-medium transition-colors">Proyectos</a>
+        <a href="/contacto" class="text-slate-600 hover:text-cyan-600 px-3 py-2 text-sm font-medium transition-colors">Contacto</a>
+      </nav>
+
+      <!-- CTA Button Desktop -->
+      <div class="hidden md:flex items-center">
+        <a href="/contacto" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-md hover:shadow-lg">
+          Cotizar Proyecto
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="flex md:hidden items-center">
+        <button type="button" id="mobile-menu-button" class="text-slate-600 hover:text-slate-900 focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
+          <span class="sr-only">Abrir menú principal</span>
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="md:hidden hidden bg-white/95 backdrop-blur-xl border-b border-slate-100 absolute w-full" id="mobile-menu">
+    <div class="px-4 pt-2 pb-6 space-y-2 shadow-xl">
+      <a href="/#inicio" class="block px-3 py-3 text-base font-medium text-slate-800 hover:text-cyan-600 hover:bg-slate-50 rounded-lg transition-colors">Inicio</a>
+      <a href="/#servicios" class="block px-3 py-3 text-base font-medium text-slate-800 hover:text-cyan-600 hover:bg-slate-50 rounded-lg transition-colors">Servicios</a>
+      <a href="/#proyectos" class="block px-3 py-3 text-base font-medium text-slate-800 hover:text-cyan-600 hover:bg-slate-50 rounded-lg transition-colors">Proyectos</a>
+      <a href="/contacto" class="block px-3 py-3 text-base font-medium text-slate-800 hover:text-cyan-600 hover:bg-slate-50 rounded-lg transition-colors">Contacto</a>
+      <a href="/contacto" class="block mt-4 text-center bg-slate-900 text-white px-5 py-3 rounded-lg text-base font-medium shadow-md">Cotizar Proyecto</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+
+  const links = menu?.querySelectorAll('a');
+  links?.forEach(link => {
+    link.addEventListener('click', () => {
+      menu?.classList.add('hidden');
+    });
+  });
+</script>

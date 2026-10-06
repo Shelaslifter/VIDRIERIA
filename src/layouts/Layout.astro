@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Expertos en vidrio templado y aluminio. Diseño, fabricación, instalación y mantenimiento con los más altos estándares de calidad y seguridad." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | Vidrios y Aluminio</title>
+	</head>
+	<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-cyan-600 selection:text-white overflow-x-hidden">
+		<slot />
+		<script>
+			// Scroll Reveal Logic
+			document.addEventListener("DOMContentLoaded", () => {
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("active");
+							// Opcional: observer.unobserve(entry.target) si solo quieres que se anime una vez
+						}
+					});
+				}, {
+					threshold: 0.1,
+					rootMargin: "0px 0px -50px 0px"
+				});
+
+				document.querySelectorAll('.reveal').forEach((el) => {
+					observer.observe(el);
+				});
+			});
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	.reveal {
+		opacity: 0;
+		transform: translateY(30px);
+		transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+	}
+	.reveal.active {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	/* Add slight delays for staggered animations if desired */
+	.reveal-delay-100 { transition-delay: 100ms; }
+	.reveal-delay-200 { transition-delay: 200ms; }
+	.reveal-delay-300 { transition-delay: 300ms; }
+</style>
