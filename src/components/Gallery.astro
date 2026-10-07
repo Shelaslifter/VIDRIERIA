@@ -8,23 +8,21 @@ const categories = ["Todos", "Vidrio Templado", "Ventanas", "Domos", "Barandales
 const projects = projectsData;
 ---
 
-<section id="proyectos" class="py-24 relative z-10">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-3xl mx-auto mb-12">
-      <h2 class="text-base text-cyan-600 font-semibold tracking-wide uppercase">Nuestro Trabajo</h2>
-      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-        Catálogo de Proyectos
-      </p>
-      <p class="mt-4 text-xl text-slate-500">
-        Explora la calidad y detalle de nuestros últimos trabajos realizados.
+<section id="proyectos" class="relative py-16 md:py-20">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto mb-16 max-w-3xl text-center md:mb-20">
+      <span class="eyebrow text-cyan-600">Nuestro Trabajo</span>
+      <h2 class="section-title text-slate-900">Catálogo de Proyectos</h2>
+      <p class="section-lead">
+        Explora la calidad y detalle de nuestros últimos trabajos realizados, diseñados para superar expectativas.
       </p>
     </div>
 
     <!-- Filters -->
-    <div class="flex flex-wrap justify-center gap-2 mb-12">
+    <div class="mb-12 flex flex-wrap justify-center gap-3">
       {categories.map((cat, index) => (
         <button 
-          class={`filter-btn px-6 py-2 rounded-full text-sm font-medium transition-colors border ${index === 0 ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-cyan-500 hover:text-cyan-600'}`}
+          class={`filter-btn rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ease-premium border ${index === 0 ? 'bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-900/20' : 'bg-white text-slate-600 border-slate-200 hover:border-cyan-500 hover:text-cyan-600 hover:shadow-sm'}`}
           data-filter={cat}
         >
           {cat}
@@ -33,19 +31,27 @@ const projects = projectsData;
     </div>
 
     <!-- Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8" id="gallery-grid">
       {projects.map((project) => (
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer bg-white aspect-[4/3] transition-transform duration-300 hover:scale-105 hover:shadow-2xl" data-category={project.category}>
+        <div class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100 cursor-pointer shadow-sm transition-all duration-500 ease-premium hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/20" data-category={project.category}>
           <Image 
             src={project.image} 
             alt={project.title} 
             width={1000}
             height={750}
-            class="w-full h-full object-cover"
+            class="h-full w-full object-cover transition-transform duration-700 ease-premium group-hover:scale-105"
           />
-          <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 text-center">
-            <span class="text-cyan-300 text-sm font-semibold tracking-wider uppercase mb-2 block transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{project.category}</span>
-            <h3 class="text-white text-2xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">{project.title}</h3>
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/40 to-transparent opacity-0 transition-opacity duration-500 ease-premium group-hover:opacity-100"></div>
+          
+          <!-- Content -->
+          <div class="absolute inset-0 flex flex-col justify-end p-8 text-left transition-transform duration-500 ease-premium">
+            <div class="translate-y-8 opacity-0 transition-all duration-500 ease-premium group-hover:translate-y-0 group-hover:opacity-100">
+              <span class="mb-3 inline-block rounded-full bg-cyan-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-300 backdrop-blur-md border border-cyan-400/20">
+                {project.category}
+              </span>
+              <h3 class="text-2xl font-bold tracking-tight text-white">{project.title}</h3>
+            </div>
           </div>
         </div>
       ))}
@@ -61,27 +67,36 @@ const projects = projectsData;
     btn.addEventListener('click', () => {
       // Update active button state
       filterBtns.forEach(b => {
-        b.classList.remove('bg-slate-900', 'text-white', 'border-slate-900');
+        b.classList.remove('bg-slate-900', 'text-white', 'border-slate-900', 'shadow-md', 'shadow-slate-900/20');
         b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+        b.classList.remove('hover:border-cyan-500', 'hover:text-cyan-600', 'hover:shadow-sm');
       });
+      
       btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
-      btn.classList.add('bg-slate-900', 'text-white', 'border-slate-900');
+      btn.classList.add('bg-slate-900', 'text-white', 'border-slate-900', 'shadow-md', 'shadow-slate-900/20');
+
+      // Re-apply hover states to inactive buttons
+      filterBtns.forEach(b => {
+        if (b !== btn) {
+           b.classList.add('hover:border-cyan-500', 'hover:text-cyan-600', 'hover:shadow-sm');
+        }
+      });
 
       const filterValue = btn.getAttribute('data-filter');
 
       galleryItems.forEach(item => {
         const category = item.getAttribute('data-category');
-        // @ts-ignore
         if (filterValue === 'Todos' || filterValue === category) {
           item.classList.remove('hidden');
+          // Pequeño delay para que la transición de opacidad funcione después del display block
           setTimeout(() => {
             item.classList.remove('opacity-0', 'scale-95');
-          }, 50);
+          }, 10);
         } else {
           item.classList.add('opacity-0', 'scale-95');
           setTimeout(() => {
             item.classList.add('hidden');
-          }, 300);
+          }, 500); // Coincide con la duración de transition-all duration-500
         }
       });
     });

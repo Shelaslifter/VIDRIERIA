@@ -1,1 +1,76 @@
 @import "tailwindcss";
+
+/* ============================================================
+   Design tokens (Tailwind v4 @theme)
+   Generan utilidades nativas: font-sans, ease-premium,
+   animate-blob, animate-ken-burns, animate-fade-in-down
+   ============================================================ */
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-blob: blob 16s ease-in-out infinite;
+  --animate-ken-burns: ken-burns 24s ease-out infinite alternate;
+  --animate-fade-in-down: fade-in-down 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+  }
+
+  @keyframes ken-burns {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+  }
+
+  @keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ============================================================
+   Utilidades reutilizables (componentes del sistema de diseño)
+   Nota: ninguna define color de texto ni padding para poder
+   combinarlas sin conflictos con utilidades inline.
+   ============================================================ */
+
+/* Cristal claro: legible sobre fondos claros */
+@utility glass {
+  @apply border border-white/70 bg-white/60 backdrop-blur-xl backdrop-saturate-150;
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.8),
+    0 1px 2px 0 rgb(15 23 42 / 0.04),
+    0 8px 32px -8px rgb(15 23 42 / 0.12);
+}
+
+/* Botón principal (CTA) */
+@utility btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-cyan-600 font-semibold text-white shadow-lg shadow-cyan-600/25 ring-1 ring-inset ring-white/10 transition-all duration-300 ease-premium hover:-translate-y-0.5 hover:bg-cyan-500 hover:shadow-xl hover:shadow-cyan-500/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400;
+}
+
+/* Botón secundario sobre fondos oscuros */
+@utility btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 font-semibold text-white backdrop-blur-md transition-all duration-300 ease-premium hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/15 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400;
+}
+
+/* Etiqueta superior de sección con líneas decorativas */
+@utility eyebrow {
+  @apply inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] before:h-px before:w-8 before:bg-current before:opacity-50 after:h-px after:w-8 after:bg-current after:opacity-50;
+}
+
+/* Título de sección */
+@utility section-title {
+  @apply mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-balance sm:text-4xl lg:text-5xl;
+}
+
+/* Párrafo introductorio de sección (fondos claros) */
+@utility section-lead {
+  @apply mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-pretty text-slate-500;
+}
+
+/* Campos de formulario */
+@utility input-field {
+  @apply w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-3.5 text-slate-900 shadow-sm shadow-slate-900/[0.02] transition-all duration-300 ease-premium placeholder:text-slate-400 hover:border-slate-300 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500;
+}

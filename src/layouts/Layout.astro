@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -7,8 +8,6 @@ interface Props {
 }
 
 const { title, description = "Expertos en vidrio templado y aluminio. Diseño, fabricación, instalación y mantenimiento con los más altos estándares de calidad y seguridad." } = Astro.props;
-
-import Footer from '../components/Footer.astro';
 ---
 
 <!doctype html>
@@ -16,56 +15,38 @@ import Footer from '../components/Footer.astro';
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#020617" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | Vidrios y Aluminio</title>
-		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+		<!-- Tipografía premium -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 	</head>
-	<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-cyan-600 selection:text-white overflow-x-hidden relative">
-		
-		<!-- Floating Glass Background Elements -->
-		<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-			<div class="absolute top-[20%] left-[10%] w-64 h-64 bg-cyan-400 opacity-20 blur-[90px] animate-blob"></div>
-			<div class="absolute top-[50%] right-[10%] w-80 h-80 bg-blue-500 opacity-20 blur-[100px] animate-blob animation-delay-2000"></div>
-			<div class="absolute bottom-[10%] left-[30%] w-72 h-72 bg-teal-400 opacity-20 blur-[90px] animate-blob animation-delay-4000"></div>
+	<body class="relative overflow-x-hidden bg-slate-50 font-sans text-slate-900 antialiased selection:bg-cyan-500 selection:text-white">
+
+		<!-- Reflejos de cristal flotantes (solo se animan si el usuario no pidió reducir movimiento) -->
+		<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+			<div class="absolute left-[10%] top-[20%] h-64 w-64 rounded-full bg-cyan-400 opacity-20 blur-[90px] motion-safe:animate-blob"></div>
+			<div class="absolute right-[10%] top-[50%] h-80 w-80 rounded-full bg-blue-500 opacity-20 blur-[100px] motion-safe:animate-blob [animation-delay:2s]"></div>
+			<div class="absolute bottom-[10%] left-[30%] h-72 w-72 rounded-full bg-teal-400 opacity-20 blur-[90px] motion-safe:animate-blob [animation-delay:4s]"></div>
 		</div>
 
-		<div class="relative z-10 min-h-screen flex flex-col">
+		<div class="relative z-10 flex min-h-screen flex-col">
 			<div class="flex-grow">
 				<slot />
 			</div>
 			<Footer />
 		</div>
-		
+
 		<script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 		<script is:inline>
-			AOS.init({ once: true, offset: 100 });
+			AOS.init({ once: true, offset: 100, duration: 800, easing: 'ease-out-cubic' });
 		</script>
 	</body>
 </html>
-
-<style is:global>
-	@keyframes blob {
-		0% { transform: translate(0px, 0px) scale(1); }
-		33% { transform: translate(30px, -50px) scale(1.1); }
-		66% { transform: translate(-20px, 20px) scale(0.9); }
-		100% { transform: translate(0px, 0px) scale(1); }
-	}
-	.animate-blob {
-		animation: blob 12s infinite;
-	}
-	.animation-delay-2000 {
-		animation-delay: 2s;
-	}
-	.animation-delay-4000 {
-		animation-delay: 4s;
-	}
-	@keyframes kenBurns {
-		0% { transform: scale(1); }
-		100% { transform: scale(1.1); }
-	}
-	.animate-ken-burns {
-		animation: kenBurns 20s ease-out forwards alternate infinite;
-	}
-</style>

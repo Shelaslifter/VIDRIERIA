@@ -2,93 +2,80 @@
 // BeforeAfter.astro
 import { Image } from 'astro:assets';
 
-// Placeholder images showing a generic room vs a modern glass installation
-const beforeImg = "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1000&auto=format&fit=crop"; 
-const afterImg = "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1000&auto=format&fit=crop";
+// Imágenes temporales: reemplazar por fotos reales de un trabajo (antes / después)
+const beforeImg = "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1600&auto=format&fit=crop";
+const afterImg = "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1600&auto=format&fit=crop";
+
+const labelClass = "pointer-events-none absolute top-4 z-10 rounded-full border border-white/20 bg-slate-950/50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-md";
 ---
 
-<section class="py-24 relative z-10 overflow-hidden">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
-      <h2 class="text-base text-cyan-600 font-semibold tracking-wide uppercase">Transformación Total</h2>
-      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-        El poder del cristal en tus espacios
-      </p>
-      <p class="mt-4 text-xl text-slate-500">
-        Desliza para ver la diferencia que hace una instalación profesional.
-      </p>
+<section class="relative py-16 md:py-20">
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    <div class="mx-auto mb-16 max-w-3xl text-center md:mb-20">
+      <span class="eyebrow text-cyan-600">Transformación Total</span>
+      <h2 class="section-title text-slate-900">El poder del cristal en tus espacios</h2>
+      <p class="section-lead">Desliza para ver la diferencia que hace una instalación profesional.</p>
     </div>
 
-    <!-- Slider Container -->
-    <div class="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl group select-none bg-slate-200">
-      
-      <!-- After Image (Background/Base) -->
-      <Image 
-        src={afterImg} 
-        alt="Después de la instalación" 
-        width={1000} 
-        height={600} 
-        class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+    <div class="ba-slider group relative aspect-[4/3] w-full select-none overflow-hidden rounded-3xl bg-slate-200 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/5 md:aspect-[16/9]">
+      <!-- Después (base) -->
+      <Image
+        src={afterImg}
+        alt="Después de la instalación"
+        width={1600}
+        height={900}
+        class="pointer-events-none absolute inset-0 h-full w-full object-cover"
       />
-      <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-sm font-semibold pointer-events-none z-10">Después</div>
+      <span class={`${labelClass} right-4`}>Después</span>
 
-      <!-- Before Image (Clipped overlay) -->
-      <div id="before-image-wrapper" class="absolute inset-0 w-1/2 h-full overflow-hidden border-r-4 border-white shadow-[10px_0_15px_-3px_rgba(0,0,0,0.5)] z-20">
-        <Image 
-          src={beforeImg} 
-          alt="Antes de la instalación" 
-          width={1000} 
-          height={600} 
-          class="absolute inset-0 w-[200%] max-w-none h-full object-cover pointer-events-none filter sepia-[0.3]"
-          style="width: 100vw; max-width: 1000px;" 
-          id="before-image"
+      <!-- Antes (recortado con clip-path) -->
+      <div class="ba-before absolute inset-0 z-20" style="clip-path: inset(0 50% 0 0);">
+        <Image
+          src={beforeImg}
+          alt="Antes de la instalación"
+          width={1600}
+          height={900}
+          class="pointer-events-none absolute inset-0 h-full w-full object-cover saturate-[.6] sepia-[.35]"
         />
-        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-sm font-semibold pointer-events-none">Antes</div>
+        <span class={`${labelClass} left-4`}>Antes</span>
       </div>
 
-      <!-- Slider Handle -->
-      <div id="slider-handle" class="absolute top-0 bottom-0 left-1/2 w-1 bg-white cursor-ew-resize z-30 transform -translate-x-1/2 flex items-center justify-center group-hover:bg-cyan-400 transition-colors">
-        <div class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-800 border-2 border-slate-100 group-hover:border-cyan-400 group-hover:text-cyan-600 transition-all">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" transform="rotate(90 12 12)" />
+      <!-- Divisor y manija -->
+      <div class="ba-handle pointer-events-none absolute inset-y-0 z-30 w-0.5 -translate-x-1/2 bg-white/90 shadow-[0_0_20px_rgba(0,0,0,0.35)]" style="left: 50%;">
+        <div class="absolute left-1/2 top-1/2 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/60 bg-white/80 text-slate-800 shadow-xl backdrop-blur-md transition-all duration-300 ease-premium group-hover:scale-110 group-hover:text-cyan-600">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7l-5 5 5 5M16 7l5 5-5 5" />
           </svg>
         </div>
       </div>
 
-      <!-- Invisible interactive overlay -->
-      <input type="range" min="0" max="100" value="50" id="slider" class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-40" />
-
+      <!-- Control accesible (invisible) -->
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="50"
+        aria-label="Comparar antes y después"
+        class="ba-range absolute inset-0 z-40 h-full w-full cursor-ew-resize opacity-0"
+      />
     </div>
   </div>
 </section>
 
 <script>
-  const slider = document.getElementById('slider') as HTMLInputElement;
-  const beforeWrapper = document.getElementById('before-image-wrapper');
-  const handle = document.getElementById('slider-handle');
-  const beforeImg = document.getElementById('before-image');
+  document.querySelectorAll<HTMLElement>('.ba-slider').forEach((slider) => {
+    const range = slider.querySelector<HTMLInputElement>('.ba-range');
+    const before = slider.querySelector<HTMLElement>('.ba-before');
+    const handle = slider.querySelector<HTMLElement>('.ba-handle');
+    if (!range || !before || !handle) return;
 
-  if (slider && beforeWrapper && handle && beforeImg) {
-    const updateSlider = () => {
-      const value = slider.value + "%";
-      beforeWrapper.style.width = value;
-      handle.style.left = value;
+    const update = () => {
+      const pos = Number(range.value);
+      before.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+      handle.style.left = `${pos}%`;
     };
 
-    // Keep the inner image size exact to the container so it doesn't squish
-    const updateImageWidth = () => {
-      const containerWidth = slider.parentElement?.getBoundingClientRect().width;
-      if (containerWidth) {
-        beforeImg.style.width = containerWidth + 'px';
-      }
-    };
-
-    slider.addEventListener('input', updateSlider);
-    window.addEventListener('resize', updateImageWidth);
-    
-    // Initial setup
-    updateSlider();
-    // Wait for render
-    setTimeout(updateImageWidth, 100);
-  }
+    range.addEventListener('input', update);
+    update();
+  });
 </script>
