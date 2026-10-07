@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { title, description = "Expertos en vidrio templado y aluminio. Diseño, fabricación, instalación y mantenimiento con los más altos estándares de calidad y seguridad." } = Astro.props;
+
+import Footer from '../components/Footer.astro';
 ---
 
 <!doctype html>
@@ -29,8 +31,11 @@ const { title, description = "Expertos en vidrio templado y aluminio. Diseño, f
 			<div class="absolute bottom-[10%] left-[30%] w-72 h-72 bg-teal-400 opacity-20 blur-[90px] animate-blob animation-delay-4000"></div>
 		</div>
 
-		<div class="relative z-10">
-			<slot />
+		<div class="relative z-10 min-h-screen flex flex-col">
+			<div class="flex-grow">
+				<slot />
+			</div>
+			<Footer />
 		</div>
 		
 		<script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

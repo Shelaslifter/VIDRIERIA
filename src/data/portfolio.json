@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "category": "Vidrio Templado",
+    "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1000&auto=format&fit=crop",
+    "title": "Fachada Comercial"
+  },
+  {
+    "id": 2,
+    "category": "Ventanas",
+    "image": "https://images.unsplash.com/photo-1600607688969-a5bfcd64bd28?q=80&w=1000&auto=format&fit=crop",
+    "title": "Ventanas Panorámicas Residenciales"
+  },
+  {
+    "id": 3,
+    "category": "Barandales",
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop",
+    "title": "Barandal de Escalera Interior"
+  },
+  {
+    "id": 4,
+    "category": "Domos",
+    "image": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1000&auto=format&fit=crop",
+    "title": "Domo Tragaluz Moderno"
+  },
+  {
+    "id": 5,
+    "category": "Vidrio Templado",
+    "image": "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=1000&auto=format&fit=crop",
+    "title": "Divisiones de Oficina"
+  },
+  {
+    "id": 6,
+    "category": "Barandales",
+    "image": "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1000&auto=format&fit=crop",
+    "title": "Balcón con Cristal Templado"
+  }
+]
