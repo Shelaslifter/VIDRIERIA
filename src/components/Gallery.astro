@@ -2,19 +2,34 @@
 // Gallery.astro
 import { Image } from 'astro:assets';
 import projectsData from '../data/portfolio.json';
+import contactData from '../data/contact.json';
+import { supabase, type ProjectItem } from '../lib/supabase';
 
 const categories = ["Todos", "Vidrio Templado", "Ventanas", "Domos", "Barandales"];
 
-const projects = projectsData;
+let projects: ProjectItem[] = projectsData;
+
+try {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (!error && data && data.length > 0) {
+    projects = data;
+  }
+} catch (e) {
+  projects = projectsData;
+}
 ---
 
-<section id="proyectos" class="relative py-16 md:py-20">
+<section id="proyectos" class="relative py-16 md:py-20 scroll-mt-24">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="mx-auto mb-16 max-w-3xl text-center md:mb-20">
       <span class="eyebrow text-cyan-600">Nuestro Trabajo</span>
       <h2 class="section-title text-slate-900">Catálogo de Proyectos</h2>
       <p class="section-lead">
-        Explora la calidad y detalle de nuestros últimos trabajos realizados, diseñados para superar expectativas.
+        Explora la calidad y detalle de nuestros últimos trabajos realizados. Haz clic en cualquiera para ver especificaciones y cotizar uno similar.
       </p>
     </div>
 
@@ -22,7 +37,7 @@ const projects = projectsData;
     <div class="mb-12 flex flex-wrap justify-center gap-3">
       {categories.map((cat, index) => (
         <button 
-          class={`filter-btn rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ease-premium border ${index === 0 ? 'bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-900/20' : 'bg-white text-slate-600 border-slate-200 hover:border-cyan-500 hover:text-cyan-600 hover:shadow-sm'}`}
+          class={`filter-btn rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ease-premium border cursor-pointer ${index === 0 ? 'bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-900/20' : 'bg-white text-slate-600 border-slate-200 hover:border-cyan-500 hover:text-cyan-600 hover:shadow-sm'}`}
           data-filter={cat}
         >
           {cat}
@@ -30,10 +45,20 @@ const projects = projectsData;
       ))}
     </div>
 
-    <!-- Grid -->
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8" id="gallery-grid">
+    <!-- Grid con altura mínima para evitar que la pantalla se colapse hacia testimonios -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 min-h-[480px] transition-all duration-500" id="gallery-grid">
       {projects.map((project) => (
-        <div class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100 cursor-pointer shadow-sm transition-all duration-500 ease-premium hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/20" data-category={project.category}>
+        <div 
+          class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100 cursor-pointer shadow-sm transition-all duration-500 ease-premium hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/20" 
+          data-category={project.category}
+          data-title={project.title}
+          data-image={project.image}
+          data-desc={project.description || "Proyecto diseñado y fabricado con cristales templados y cancelería de aluminio de alta resistencia."}
+          data-specs={project.specs || "Vidrio de Seguridad • Herrajes Premium • Instalación Garantizada"}
+          role="button"
+          tabindex="0"
+          aria-label={`Ver detalles de ${project.title}`}
+        >
           <Image 
             src={project.image} 
             alt={project.title} 
@@ -44,6 +69,13 @@ const projects = projectsData;
           <!-- Overlay -->
           <div class="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/40 to-transparent opacity-0 transition-opacity duration-500 ease-premium group-hover:opacity-100"></div>
           
+          <!-- Lupa / Icono de vista rápida -->
+          <div class="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md opacity-0 transition-all duration-300 ease-premium group-hover:opacity-100 group-hover:scale-110">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+            </svg>
+          </div>
+
           <!-- Content -->
           <div class="absolute inset-0 flex flex-col justify-end p-8 text-left transition-transform duration-500 ease-premium">
             <div class="translate-y-8 opacity-0 transition-all duration-500 ease-premium group-hover:translate-y-0 group-hover:opacity-100">
@@ -51,21 +83,120 @@ const projects = projectsData;
                 {project.category}
               </span>
               <h3 class="text-2xl font-bold tracking-tight text-white">{project.title}</h3>
+              <p class="mt-2 text-xs text-slate-300 line-clamp-1">Click para ver ficha técnica y cotizar</p>
             </div>
           </div>
         </div>
       ))}
     </div>
   </div>
+
+  <!-- Lightbox Modal (Totalmente responsivo y adaptativo) -->
+  <div 
+    id="gallery-modal" 
+    class="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 ease-premium overflow-y-auto"
+    aria-hidden="true"
+    role="dialog"
+  >
+    <!-- Backdrop con desenfoque profundo -->
+    <div id="modal-backdrop" class="absolute inset-0 bg-slate-950/85 backdrop-blur-xl transition-opacity duration-300"></div>
+
+    <!-- Contenedor del Modal con altura máxima y scroll interno -->
+    <div 
+      class="relative z-10 flex w-full max-w-4xl max-h-[90vh] flex-col md:flex-row overflow-hidden rounded-[2rem] border border-white/20 bg-slate-900 shadow-2xl shadow-cyan-950/50 backdrop-blur-2xl text-white transition-all duration-300 scale-95" 
+      id="modal-container"
+    >
+      
+      <!-- Botón Cerrar (Siempre visible en la esquina superior) -->
+      <button 
+        id="modal-close" 
+        class="absolute right-3.5 top-3.5 z-30 grid h-9 w-9 place-items-center rounded-full bg-slate-950/80 text-white/90 hover:bg-slate-900 hover:text-white transition-all border border-white/20 backdrop-blur-md cursor-pointer shadow-lg hover:scale-105"
+        aria-label="Cerrar modal"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Columna 1: Imagen -->
+      <div class="relative h-48 sm:h-60 md:h-auto md:w-1/2 shrink-0 overflow-hidden bg-slate-950">
+        <img 
+          id="modal-img" 
+          src="" 
+          alt="Detalle del proyecto" 
+          class="h-full w-full object-cover transition-transform duration-500 ease-premium"
+        />
+        <div class="absolute inset-0 bg-linear-to-t from-slate-900/80 via-transparent to-transparent md:hidden"></div>
+      </div>
+
+      <!-- Columna 2: Info y Botones con scroll interno para que NUNCA se corte -->
+      <div class="flex flex-col justify-between p-5 sm:p-6 lg:p-8 overflow-y-auto flex-1 overscroll-contain">
+        <div>
+          <!-- Categoría -->
+          <div class="mb-3">
+            <span id="modal-cat" class="inline-block rounded-full bg-cyan-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-400/25">
+              Categoría
+            </span>
+          </div>
+
+          <!-- Título -->
+          <h3 id="modal-title" class="text-xl sm:text-2xl font-bold tracking-tight text-white mb-3">
+            Título del proyecto
+          </h3>
+
+          <!-- Descripción -->
+          <p id="modal-desc" class="text-xs sm:text-sm leading-relaxed text-slate-300 mb-5">
+            Descripción completa del trabajo realizado.
+          </p>
+
+          <!-- Ficha Técnica -->
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-4 mb-4">
+            <h4 class="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-1 flex items-center gap-1.5">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              Ficha Técnica
+            </h4>
+            <p id="modal-specs" class="text-xs text-slate-200">
+              Especificaciones
+            </p>
+          </div>
+        </div>
+
+        <!-- Botones de Acción (Siempre visibles en la parte inferior) -->
+        <div class="shrink-0 flex flex-col sm:flex-row gap-2.5 pt-4 border-t border-white/10 mt-3">
+          <a 
+            id="modal-wa-btn" 
+            data-wa-number={contactData.whatsappNumber}
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="btn-primary flex-1 justify-center py-3 text-xs sm:text-sm font-semibold cursor-pointer shadow-lg shadow-cyan-500/20"
+          >
+            <span>Quiero uno similar</span>
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.815 11.815 0 018.413 3.487 11.821 11.821 0 013.48 8.413c-.003 6.558-5.339 11.893-11.893 11.893h-.005a11.882 11.882 0 01-5.683-1.448L.057 24z"/>
+            </svg>
+          </a>
+          <a 
+            href="#cotizador" 
+            id="modal-calc-btn"
+            class="btn-ghost justify-center py-3 text-xs sm:text-sm font-semibold cursor-pointer"
+          >
+            Calcular medidas
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
+  // Filter logic
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const galleryItems = document.querySelectorAll('.gallery-item');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Update active button state
       filterBtns.forEach(b => {
         b.classList.remove('bg-slate-900', 'text-white', 'border-slate-900', 'shadow-md', 'shadow-slate-900/20');
         b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
@@ -75,20 +206,19 @@ const projects = projectsData;
       btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
       btn.classList.add('bg-slate-900', 'text-white', 'border-slate-900', 'shadow-md', 'shadow-slate-900/20');
 
-      // Re-apply hover states to inactive buttons
       filterBtns.forEach(b => {
         if (b !== btn) {
            b.classList.add('hover:border-cyan-500', 'hover:text-cyan-600', 'hover:shadow-sm');
         }
       });
 
-      const filterValue = btn.getAttribute('data-filter');
+      const filterValue = btn.getAttribute('data-filter') || 'Todos';
 
-      galleryItems.forEach(item => {
+      const currentItems = document.querySelectorAll<HTMLElement>('.gallery-item');
+      currentItems.forEach(item => {
         const category = item.getAttribute('data-category');
         if (filterValue === 'Todos' || filterValue === category) {
           item.classList.remove('hidden');
-          // Pequeño delay para que la transición de opacidad funcione después del display block
           setTimeout(() => {
             item.classList.remove('opacity-0', 'scale-95');
           }, 10);
@@ -96,9 +226,165 @@ const projects = projectsData;
           item.classList.add('opacity-0', 'scale-95');
           setTimeout(() => {
             item.classList.add('hidden');
-          }, 500); // Coincide con la duración de transition-all duration-500
+          }, 300);
         }
       });
+
+      // Mantener la vista enfocada en la galería sin que la pantalla salte a Testimonios
+      const section = document.getElementById('proyectos');
+      if (section) {
+        const navOffset = 90;
+        const rect = section.getBoundingClientRect();
+        if (rect.top < -20 || rect.top > 250) {
+          const y = window.pageYOffset + rect.top - navOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
     });
   });
+
+  // Modal logic
+  const modal = document.getElementById('gallery-modal');
+  const modalBackdrop = document.getElementById('modal-backdrop');
+  const modalContainer = document.getElementById('modal-container');
+  const modalClose = document.getElementById('modal-close');
+  const modalImg = document.getElementById('modal-img') as HTMLImageElement;
+  const modalCat = document.getElementById('modal-cat');
+  const modalTitle = document.getElementById('modal-title');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalSpecs = document.getElementById('modal-specs');
+  const modalWaBtn = document.getElementById('modal-wa-btn') as HTMLAnchorElement;
+  const modalCalcBtn = document.getElementById('modal-calc-btn') as HTMLAnchorElement;
+
+  // Teletransportar el modal a document.body para liberarlo de cualquier transform o limitación de contenedor
+  if (modal && modal.parentElement !== document.body) {
+    document.body.appendChild(modal);
+  }
+
+  const openModal = (item: HTMLElement) => {
+    const title = item.dataset.title || '';
+    const cat = item.dataset.category || '';
+    const img = item.dataset.image || '';
+    const desc = item.dataset.desc || '';
+    const specs = item.dataset.specs || '';
+
+    if (modalImg) modalImg.src = img;
+    if (modalCat) modalCat.textContent = cat;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalDesc) modalDesc.textContent = desc;
+    if (modalSpecs) modalSpecs.textContent = specs;
+
+    if (modalWaBtn) {
+      const msg = `Hola, vi el proyecto "${title}" (${cat}) en su página web y me gustaría cotizar algo similar.`;
+      const waNum = modalWaBtn.dataset.waNumber || "525627320080";
+      modalWaBtn.href = `https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`;
+    }
+
+    if (modal) {
+      if (modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+      }
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.setAttribute('aria-hidden', 'false');
+      modalContainer?.classList.remove('scale-95');
+      modalContainer?.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const closeModal = () => {
+    if (modal) {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.setAttribute('aria-hidden', 'true');
+      modalContainer?.classList.add('scale-95');
+      modalContainer?.classList.remove('scale-100');
+      document.body.style.overflow = '';
+    }
+  };
+
+  function attachGalleryListeners() {
+    const items = document.querySelectorAll<HTMLElement>('.gallery-item');
+    items.forEach(item => {
+      item.onclick = () => openModal(item);
+      item.onkeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(item);
+        }
+      };
+    });
+  }
+
+  // Asignar listeners a los proyectos de la galería
+  attachGalleryListeners();
+
+  modalClose?.addEventListener('click', closeModal);
+  modalBackdrop?.addEventListener('click', closeModal);
+  modalCalcBtn?.addEventListener('click', closeModal);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('pointer-events-none')) {
+      closeModal();
+    }
+  });
+
+  // Sincronización en vivo con Supabase en el navegador
+  async function syncLiveGallery() {
+    const grid = document.getElementById('gallery-grid');
+    if (!grid) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        grid.innerHTML = data.map((project: any) => `
+          <div 
+            class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100 cursor-pointer shadow-sm transition-all duration-500 ease-premium hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/20" 
+            data-category="${project.category}"
+            data-title="${project.title}"
+            data-image="${project.image}"
+            data-desc="${project.description || 'Proyecto diseñado y fabricado con cristales templados y cancelería de aluminio de alta resistencia.'}"
+            data-specs="${project.specs || 'Vidrio de Seguridad • Herrajes Premium • Instalación Garantizada'}"
+            role="button"
+            tabindex="0"
+            aria-label="Ver detalles de ${project.title}"
+          >
+            <img 
+              src="${project.image}" 
+              alt="${project.title}" 
+              class="h-full w-full object-cover transition-transform duration-700 ease-premium group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/40 to-transparent opacity-0 transition-opacity duration-500 ease-premium group-hover:opacity-100"></div>
+            
+            <div class="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md opacity-0 transition-all duration-300 ease-premium group-hover:opacity-100 group-hover:scale-110">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+              </svg>
+            </div>
+
+            <div class="absolute inset-0 flex flex-col justify-end p-8 text-left transition-transform duration-500 ease-premium">
+              <div class="translate-y-8 opacity-0 transition-all duration-500 ease-premium group-hover:translate-y-0 group-hover:opacity-100">
+                <span class="mb-3 inline-block rounded-full bg-cyan-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-300 backdrop-blur-md border border-cyan-400/20">
+                  ${project.category}
+                </span>
+                <h3 class="text-2xl font-bold tracking-tight text-white">${project.title}</h3>
+                <p class="mt-2 text-xs text-slate-300 line-clamp-1">Click para ver ficha técnica y cotizar</p>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Reasignar eventos a los elementos inyectados
+        attachGalleryListeners();
+      }
+    } catch (e) {
+      // Ignorar si no hay conexión
+    }
+  }
+
+  syncLiveGallery();
 </script>

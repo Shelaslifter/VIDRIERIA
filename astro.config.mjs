@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   image: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com', 'fimxtttwucdrqptkhknm.supabase.co'],
   },
   vite: {
     plugins: [tailwindcss()]

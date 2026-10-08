@@ -1,0 +1,261 @@
+---
+// Estimator.astro - Cotizador interactivo express con envío automático a WhatsApp
+import contactData from '../data/contact.json';
+---
+
+<section id="cotizador" class="relative py-16 md:py-20 overflow-hidden scroll-mt-24">
+  <!-- Luces ambientales de fondo -->
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <div class="absolute -left-20 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-[100px]"></div>
+    <div class="absolute -right-20 bottom-10 h-80 w-80 rounded-full bg-blue-500/10 blur-[100px]"></div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto mb-12 max-w-3xl text-center md:mb-16">
+      <span class="eyebrow text-cyan-600">Presupuesto en 1 Minuto</span>
+      <h2 class="section-title text-slate-900">Cotizador Interactivo Express</h2>
+      <p class="section-lead">
+        Elige tu tipo de trabajo y medidas aproximadas. Te generamos al instante el mensaje listo para enviar por WhatsApp sin que tengas que redactar nada.
+      </p>
+    </div>
+
+    <div class="mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] border border-white/60 bg-white/80 p-6 shadow-2xl shadow-slate-900/10 backdrop-blur-xl sm:p-10 lg:p-12">
+      
+      <!-- Paso 1: Tipo de Proyecto -->
+      <div class="mb-8">
+        <label class="mb-3 block text-sm font-bold tracking-wide uppercase text-slate-700">
+          1. ¿Qué proyecto deseas cotizar?
+        </label>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5" id="project-options">
+          <button type="button" class="opt-btn project-opt active group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Cancel de Baño">
+            <span class="mb-2 text-2xl">🚿</span>
+            <span class="text-xs sm:text-sm font-semibold text-slate-800">Cancel de Baño</span>
+          </button>
+          
+          <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Ventana / Cancelería">
+            <span class="mb-2 text-2xl">🪟</span>
+            <span class="text-xs sm:text-sm font-semibold text-slate-800">Ventana / Cancelería</span>
+          </button>
+
+          <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Barandal de Cristal">
+            <span class="mb-2 text-2xl">🪜</span>
+            <span class="text-xs sm:text-sm font-semibold text-slate-800">Barandal</span>
+          </button>
+
+          <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Domo / Tragaluz">
+            <span class="mb-2 text-2xl">☀️</span>
+            <span class="text-xs sm:text-sm font-semibold text-slate-800">Domo / Techo</span>
+          </button>
+
+          <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Fachada o División">
+            <span class="mb-2 text-2xl">🏢</span>
+            <span class="text-xs sm:text-sm font-semibold text-slate-800">Fachada / Otro</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Paso 2: Tipo de Vidrio -->
+      <div class="mb-8">
+        <label class="mb-3 block text-sm font-bold tracking-wide uppercase text-slate-700">
+          2. Tipo de cristal o acabado
+        </label>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4" id="glass-options">
+          <button type="button" class="opt-btn glass-opt active rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Templado Claro (6mm a 9.5mm)">
+            ✨ Templado Claro
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Esmerilado / Satinado (Privacidad)">
+            🌫️ Esmerilado / Satinado
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Tintado / Filtrasol / Tintex">
+            🕶️ Filtrasol / Tintex
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Asesoría requerida (No estoy seguro)">
+            💬 Requiero Asesoría
+          </button>
+        </div>
+      </div>
+
+      <!-- Paso 3: Medidas aproximadas -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-3">
+          <label class="block text-sm font-bold tracking-wide uppercase text-slate-700">
+            3. Medidas aproximadas (Metros)
+          </label>
+          <span class="text-xs text-slate-500">* Pueden ser tentativas, luego se verifican</span>
+        </div>
+        
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label for="calc-width" class="block text-xs font-semibold text-slate-600 mb-1">Ancho (m)</label>
+            <div class="relative">
+              <input 
+                type="number" 
+                id="calc-width" 
+                step="0.05" 
+                min="0.3" 
+                max="20" 
+                value="1.80" 
+                class="input-field pr-12 font-semibold"
+                placeholder="Ej. 1.80"
+              />
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">m</span>
+            </div>
+          </div>
+
+          <div>
+            <label for="calc-height" class="block text-xs font-semibold text-slate-600 mb-1">Alto (m)</label>
+            <div class="relative">
+              <input 
+                type="number" 
+                id="calc-height" 
+                step="0.05" 
+                min="0.3" 
+                max="10" 
+                value="1.90" 
+                class="input-field pr-12 font-semibold"
+                placeholder="Ej. 1.90"
+              />
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">m</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="calc-notes" class="block text-xs font-semibold text-slate-600 mb-1">Detalle o color de herrajes (Opcional)</label>
+          <input 
+            type="text" 
+            id="calc-notes" 
+            class="input-field text-sm" 
+            placeholder="Ej. Herrajes negros mate, con toallero, instalación en planta alta..."
+          />
+        </div>
+      </div>
+
+      <!-- Resumen en tiempo real y Envío a WhatsApp -->
+      <div class="rounded-2xl border border-cyan-200/60 bg-linear-to-br from-cyan-50/70 via-white to-slate-50 p-6 sm:p-8">
+        <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-cyan-100 pb-4">
+          <div>
+            <h4 class="text-sm font-bold uppercase tracking-wider text-cyan-900">Vista previa de tu solicitud</h4>
+            <p class="text-xs text-slate-600">Este mensaje exacto se redactará en tu WhatsApp listo para enviar:</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="rounded-full bg-cyan-600/10 px-3 py-1 text-xs font-semibold text-cyan-700">
+              Área aprox: <strong id="calc-area" class="text-cyan-900">3.42 m²</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- Caja de texto que simula el mensaje de WhatsApp -->
+        <div class="mb-6 rounded-xl bg-white p-4 font-mono text-xs sm:text-sm text-slate-700 shadow-inner border border-slate-200/80 leading-relaxed whitespace-pre-line" id="preview-box">
+          Cargando vista previa...
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <a 
+            id="whatsapp-estimate-btn" 
+            data-wa-number={contactData.whatsappNumber}
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto flex-1 btn-primary justify-center py-4 text-base font-bold shadow-lg shadow-cyan-600/25 group cursor-pointer"
+          >
+            <svg class="h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.815 11.815 0 018.413 3.487 11.821 11.821 0 013.48 8.413c-.003 6.558-5.339 11.893-11.893 11.893h-.005a11.882 11.882 0 01-5.683-1.448L.057 24z"/>
+            </svg>
+            <span>Enviar medidas y cotizar por WhatsApp</span>
+          </a>
+
+          <a 
+            href="#contacto" 
+            class="w-full sm:w-auto btn-ghost justify-center py-4 text-xs sm:text-sm font-semibold"
+          >
+            Enviar por formulario web
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  let selectedProject = "Cancel de Baño";
+  let selectedGlass = "Templado Claro (6mm a 9.5mm)";
+
+  const projectButtons = document.querySelectorAll<HTMLButtonElement>('.project-opt');
+  const glassButtons = document.querySelectorAll<HTMLButtonElement>('.glass-opt');
+  const widthInput = document.getElementById('calc-width') as HTMLInputElement;
+  const heightInput = document.getElementById('calc-height') as HTMLInputElement;
+  const notesInput = document.getElementById('calc-notes') as HTMLInputElement;
+  const areaDisplay = document.getElementById('calc-area');
+  const previewBox = document.getElementById('preview-box');
+  const waBtn = document.getElementById('whatsapp-estimate-btn') as HTMLAnchorElement;
+
+  function updateActiveClasses(buttons: NodeListOf<HTMLButtonElement>, activeVal: string) {
+    buttons.forEach(btn => {
+      if (btn.dataset.val === activeVal) {
+        btn.classList.add('border-cyan-600', 'bg-cyan-50/50', 'ring-2', 'ring-cyan-500', 'text-cyan-900');
+        btn.classList.remove('border-slate-200', 'bg-white', 'text-slate-800');
+      } else {
+        btn.classList.remove('border-cyan-600', 'bg-cyan-50/50', 'ring-2', 'ring-cyan-500', 'text-cyan-900');
+        btn.classList.add('border-slate-200', 'bg-white', 'text-slate-800');
+      }
+    });
+  }
+
+  function updatePreview() {
+    const width = parseFloat(widthInput?.value || "0") || 0;
+    const height = parseFloat(heightInput?.value || "0") || 0;
+    const notes = notesInput?.value.trim() || "";
+    const area = (width * height).toFixed(2);
+
+    if (areaDisplay) {
+      areaDisplay.textContent = `${area} m²`;
+    }
+
+    let message = `¡Hola! Me gustaría cotizar un proyecto desde su sitio web:\n\n`;
+    message += `📐 Proyecto: ${selectedProject}\n`;
+    message += `💎 Cristal: ${selectedGlass}\n`;
+    message += `📏 Medidas aprox: ${width}m (ancho) x ${height}m (alto) [aprox. ${area} m²]\n`;
+    
+    if (notes) {
+      message += `📝 Detalles: ${notes}\n`;
+    }
+    
+    message += `\n¿Podrían darme un estimado o agendar visita para toma de medidas? ¡Gracias!`;
+
+    if (previewBox) {
+      previewBox.textContent = message;
+    }
+
+    if (waBtn) {
+      const waNum = waBtn.dataset.waNumber || "521XXXXXXXXXX";
+      waBtn.href = `https://wa.me/${waNum}?text=${encodeURIComponent(message)}`;
+    }
+  }
+
+  projectButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedProject = btn.dataset.val || "Cancel de Baño";
+      updateActiveClasses(projectButtons, selectedProject);
+      updatePreview();
+    });
+  });
+
+  glassButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedGlass = btn.dataset.val || "Templado Claro";
+      updateActiveClasses(glassButtons, selectedGlass);
+      updatePreview();
+    });
+  });
+
+  widthInput?.addEventListener('input', updatePreview);
+  heightInput?.addEventListener('input', updatePreview);
+  notesInput?.addEventListener('input', updatePreview);
+
+  // Inicializar estado
+  updateActiveClasses(projectButtons, selectedProject);
+  updateActiveClasses(glassButtons, selectedGlass);
+  updatePreview();
+</script>

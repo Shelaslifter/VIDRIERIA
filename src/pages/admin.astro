@@ -1,0 +1,565 @@
+---
+// src/pages/admin.astro - Panel de Administración para gestión de galería
+import Layout from '../layouts/Layout.astro';
+import Logo from '../components/Logo.astro';
+---
+
+<Layout title="Panel de Administración - VIDRIERIA">
+  <div class="min-h-screen bg-slate-950 text-white relative overflow-hidden pb-20">
+    
+    <!-- Luces ambientales de fondo -->
+    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+      <div class="absolute -top-24 left-1/4 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px]"></div>
+      <div class="absolute bottom-10 right-1/4 h-96 w-96 rounded-full bg-blue-600/10 blur-[120px]"></div>
+    </div>
+
+    <!-- Barra de navegación del Admin -->
+    <header class="relative z-20 border-b border-white/10 bg-slate-900/60 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div class="flex items-center gap-4">
+          <Logo />
+          <span class="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-400 border border-cyan-400/20">
+            Panel de Control
+          </span>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a href="/" target="_blank" class="btn-ghost py-2 px-4 text-xs sm:text-sm font-semibold flex items-center gap-1.5">
+            <span>Ver Sitio Web</span>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <button id="btn-logout" class="hidden text-xs text-slate-400 hover:text-rose-400 transition-colors cursor-pointer">
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative z-10 mx-auto max-w-7xl px-6 pt-10">
+
+      <!-- PANTALLA 1: Acceso de Seguridad (PIN / Clave de Acceso) -->
+      <div id="auth-screen" class="mx-auto max-w-md mt-16 text-center">
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
+          <div class="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-cyan-500/10 text-cyan-400 ring-1 ring-cyan-400/20">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+          
+          <h2 class="text-2xl font-bold tracking-tight text-white mb-2">Acceso Administrador</h2>
+          <p class="text-sm text-slate-400 mb-6">Ingresa la clave de acceso para gestionar los proyectos de la vidriería.</p>
+
+          <form id="auth-form" class="space-y-4">
+            <div>
+              <input 
+                type="password" 
+                id="admin-pin" 
+                class="w-full rounded-xl border border-white/15 bg-slate-900/90 px-4 py-3.5 text-center text-lg tracking-widest text-white shadow-inner focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all placeholder:tracking-normal placeholder:text-slate-500" 
+                placeholder="Ingresa tu contraseña"
+                required
+              />
+              <p id="auth-error" class="hidden mt-2 text-xs text-rose-400">Contraseña incorrecta. Inténtalo de nuevo.</p>
+            </div>
+            
+            <button type="submit" class="btn-primary w-full py-3.5 text-sm font-semibold justify-center cursor-pointer">
+              Entrar al Panel
+            </button>
+          </form>
+
+          <p class="mt-6 text-xs text-slate-500">
+            * Clave predeterminada inicial: <code class="text-cyan-400 font-mono">admin123</code> (puedes cambiarla en cualquier momento).
+          </p>
+        </div>
+      </div>
+
+      <!-- PANTALLA 2: Panel de Gestión (Oculto hasta que ingrese la clave) -->
+      <div id="dashboard-screen" class="hidden">
+        
+        <!-- Header del Dashboard -->
+        <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white">Gestión de Catálogo</h1>
+            <p class="mt-1 text-sm text-slate-400">Sube fotos de tus nuevos trabajos o elimina proyectos existentes en tiempo real.</p>
+          </div>
+          
+          <button id="btn-open-modal" class="btn-primary py-3.5 px-6 text-sm font-bold shadow-lg shadow-cyan-500/20 cursor-pointer">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Subir Nuevo Proyecto</span>
+          </button>
+        </div>
+
+        <!-- Alerta de estado -->
+        <div id="status-alert" class="hidden mb-8 rounded-2xl p-4 text-sm font-medium"></div>
+
+        <!-- Grid de Proyectos Actuales -->
+        <div class="mb-6 flex items-center justify-between">
+          <h2 class="text-lg font-bold text-slate-200">Proyectos Publicados en la Web</h2>
+          <span id="projects-count" class="text-xs text-slate-400 font-mono">Cargando...</span>
+        </div>
+
+        <div id="projects-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Cargado dinámicamente con JavaScript desde Supabase -->
+          <div class="col-span-full py-16 text-center text-slate-500">
+            <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-cyan-400 border-r-transparent"></div>
+            <p class="mt-3 text-sm">Cargando proyectos desde Supabase...</p>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- MODAL: Subir Nuevo Proyecto (Corregido con Scroll y Header Sticky) -->
+    <div 
+      id="upload-modal" 
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 opacity-0 pointer-events-none transition-all duration-300"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-heading"
+    >
+      <!-- Backdrop desenfocado -->
+      <div id="modal-bg" class="absolute inset-0 bg-slate-950/85 backdrop-blur-xl"></div>
+      
+      <!-- Contenedor del Modal con tamaño controlado y diseño estilizado -->
+      <div class="relative z-10 flex w-full max-w-xl max-h-[92vh] flex-col rounded-3xl border border-white/20 bg-slate-900 shadow-2xl backdrop-blur-2xl text-white overflow-hidden">
+        
+        <!-- Header Sticky del Modal -->
+        <div class="shrink-0 flex items-center justify-between border-b border-white/10 px-6 py-4.5 sm:px-8 bg-slate-900/90 backdrop-blur-md">
+          <div class="flex items-center gap-3">
+            <div class="grid h-9 w-9 place-items-center rounded-xl bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-400/20">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <div>
+              <h3 id="modal-heading" class="text-lg font-bold text-white">Subir Nuevo Trabajo</h3>
+              <p class="text-xs text-slate-400">Publica un nuevo trabajo en el catálogo web</p>
+            </div>
+          </div>
+
+          <button 
+            id="btn-close-modal" 
+            class="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-slate-400 hover:bg-white/15 hover:text-white transition-colors cursor-pointer border border-white/10"
+            aria-label="Cerrar modal"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Cuerpo del Formulario con Scroll Suave -->
+        <div class="overflow-y-auto px-6 py-6 sm:px-8 space-y-5 flex-1 overscroll-contain">
+          <form id="upload-form" class="space-y-5">
+            
+            <!-- Input de Imagen (Dropzone) -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-300 mb-2">
+                Foto del Proyecto <span class="text-rose-400">*</span>
+              </label>
+              
+              <div class="relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/20 p-5 text-center hover:border-cyan-400 hover:bg-white/5 transition-all bg-slate-950/40 cursor-pointer group" id="drop-area">
+                <input type="file" id="file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10" required />
+                
+                <div id="preview-placeholder" class="py-2">
+                  <div class="mx-auto mb-2 grid h-12 w-12 place-items-center rounded-2xl bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <p class="text-xs font-medium text-slate-200">Haz clic o arrastra una fotografía aquí</p>
+                  <p class="text-[11px] text-slate-400 mt-1">Formatos JPG, PNG, WEBP</p>
+                </div>
+
+                <div id="preview-container" class="hidden relative w-full">
+                  <img id="image-preview" class="max-h-48 w-full rounded-xl object-cover shadow-lg border border-white/10" alt="Vista previa" />
+                  <span class="absolute bottom-2 right-2 rounded-lg bg-black/70 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-md">
+                    Clic para cambiar
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Título -->
+            <div>
+              <label for="p-title" class="block text-xs font-semibold uppercase tracking-wider text-cyan-300 mb-1.5">
+                Título del Trabajo <span class="text-rose-400">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="p-title" 
+                class="w-full rounded-xl border border-white/15 bg-slate-950/70 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all" 
+                placeholder="Ej. Cancel de Baño Templado Esmerilado" 
+                required 
+              />
+            </div>
+
+            <!-- Categoría -->
+            <div>
+              <label for="p-category" class="block text-xs font-semibold uppercase tracking-wider text-cyan-300 mb-1.5">
+                Categoría <span class="text-rose-400">*</span>
+              </label>
+              <select 
+                id="p-category" 
+                class="w-full rounded-xl border border-white/15 bg-slate-950/70 px-4 py-3 text-sm text-white focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all cursor-pointer" 
+                required
+              >
+                <option value="Vidrio Templado" class="bg-slate-900 text-white">Vidrio Templado</option>
+                <option value="Ventanas" class="bg-slate-900 text-white">Ventanas</option>
+                <option value="Domos" class="bg-slate-900 text-white">Domos</option>
+                <option value="Barandales" class="bg-slate-900 text-white">Barandales</option>
+                <option value="Otro" class="bg-slate-900 text-white">Otro</option>
+              </select>
+            </div>
+
+            <!-- Ficha Técnica -->
+            <div>
+              <label for="p-specs" class="block text-xs font-semibold uppercase tracking-wider text-cyan-300 mb-1.5">
+                Ficha Técnica (Materiales y Calibres)
+              </label>
+              <input 
+                type="text" 
+                id="p-specs" 
+                class="w-full rounded-xl border border-white/15 bg-slate-950/70 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all" 
+                placeholder="Ej. Templado 9.5mm • Herrajes Acero Inoxidable • Sellado Estructural" 
+              />
+            </div>
+
+            <!-- Descripción -->
+            <div>
+              <label for="p-desc" class="block text-xs font-semibold uppercase tracking-wider text-cyan-300 mb-1.5">
+                Descripción breve
+              </label>
+              <textarea 
+                id="p-desc" 
+                rows="3" 
+                class="w-full rounded-xl border border-white/15 bg-slate-950/70 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all resize-none" 
+                placeholder="Describe brevemente el diseño, acabado o ventajas de este proyecto..."
+              ></textarea>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Footer Sticky con el Botón de Guardar (Siempre Visible) -->
+        <div class="shrink-0 flex items-center justify-end gap-3 border-t border-white/10 px-6 py-4 sm:px-8 bg-slate-900/95 backdrop-blur-md">
+          <button 
+            type="button" 
+            id="btn-cancel-modal" 
+            class="btn-ghost py-3 px-5 text-sm font-semibold cursor-pointer"
+          >
+            Cancelar
+          </button>
+
+          <button 
+            type="submit" 
+            form="upload-form" 
+            id="btn-submit-upload" 
+            class="btn-primary py-3 px-6 text-sm font-bold cursor-pointer shadow-lg shadow-cyan-500/25"
+          >
+            <span>Guardar y Publicar en la Web</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<script>
+  import { supabase, type ProjectItem } from '../lib/supabase';
+
+  // Contraseña de administrador
+  const ADMIN_PASSWORD = "admin123";
+
+  const authScreen = document.getElementById('auth-screen');
+  const dashboardScreen = document.getElementById('dashboard-screen');
+  const authForm = document.getElementById('auth-form');
+  const adminPin = document.getElementById('admin-pin') as HTMLInputElement;
+  const authError = document.getElementById('auth-error');
+  const btnLogout = document.getElementById('btn-logout');
+
+  const projectsGrid = document.getElementById('projects-grid');
+  const projectsCount = document.getElementById('projects-count');
+  const statusAlert = document.getElementById('status-alert');
+
+  const uploadModal = document.getElementById('upload-modal');
+  const btnOpenModal = document.getElementById('btn-open-modal');
+  const btnCloseModal = document.getElementById('btn-close-modal');
+  const btnCancelModal = document.getElementById('btn-cancel-modal');
+  const modalBg = document.getElementById('modal-bg');
+
+  const uploadForm = document.getElementById('upload-form') as HTMLFormElement;
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const imagePreview = document.getElementById('image-preview') as HTMLImageElement;
+  const previewPlaceholder = document.getElementById('preview-placeholder');
+  const previewContainer = document.getElementById('preview-container');
+  const btnSubmit = document.getElementById('btn-submit-upload') as HTMLButtonElement;
+
+  // 1. Manejo de Sesión
+  const checkAuth = () => {
+    const isAuth = sessionStorage.getItem('vidrieria_admin_auth') === 'true';
+    if (isAuth) {
+      authScreen?.classList.add('hidden');
+      dashboardScreen?.classList.remove('hidden');
+      btnLogout?.classList.remove('hidden');
+      loadProjects();
+    } else {
+      authScreen?.classList.remove('hidden');
+      dashboardScreen?.classList.add('hidden');
+      btnLogout?.classList.add('hidden');
+    }
+  };
+
+  authForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (adminPin.value === ADMIN_PASSWORD) {
+      sessionStorage.setItem('vidrieria_admin_auth', 'true');
+      authError?.classList.add('hidden');
+      checkAuth();
+    } else {
+      authError?.classList.remove('hidden');
+      adminPin.focus();
+    }
+  });
+
+  btnLogout?.addEventListener('click', () => {
+    sessionStorage.removeItem('vidrieria_admin_auth');
+    checkAuth();
+  });
+
+  // 2. Cargar Proyectos desde Supabase
+  async function loadProjects() {
+    if (!projectsGrid) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        showStatus(`Aviso: La tabla 'projects' aún no existe en Supabase o ocurrió un error: ${error.message}`, 'warning');
+        projectsGrid.innerHTML = `
+          <div class="col-span-full rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6 text-center text-amber-200">
+            <p class="font-bold">⚠️ Conexión exitosa, pero falta crear la tabla en Supabase.</p>
+            <p class="mt-2 text-xs text-amber-300">Ejecuta el script SQL en el editor de Supabase para activar la tabla y el bucket de fotos.</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        if (projectsCount) projectsCount.textContent = '0 proyectos';
+        projectsGrid.innerHTML = `
+          <div class="col-span-full rounded-2xl border border-white/10 bg-white/5 py-16 text-center text-slate-400">
+            <p class="text-base font-semibold">No hay proyectos subidos todavía.</p>
+            <p class="mt-1 text-xs text-slate-500">Haz clic en "Subir Nuevo Proyecto" para agregar el primero.</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (projectsCount) projectsCount.textContent = `${data.length} proyectos activos`;
+
+      projectsGrid.innerHTML = data.map((item: ProjectItem) => `
+        <div class="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-white/20 hover:bg-white/10" id="card-${item.id}">
+          <div class="relative aspect-[4/3] overflow-hidden bg-slate-900">
+            <img src="${item.image}" alt="${item.title}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <span class="absolute top-3 left-3 rounded-full bg-slate-950/70 px-3 py-1 text-xs font-semibold text-cyan-300 backdrop-blur-md border border-white/10">
+              ${item.category}
+            </span>
+          </div>
+
+          <div class="p-5">
+            <h3 class="text-base font-bold text-white line-clamp-1 mb-1">${item.title}</h3>
+            <p class="text-xs text-slate-400 line-clamp-2 mb-4">${item.description || 'Sin descripción'}</p>
+            
+            <div class="flex items-center justify-between pt-3 border-t border-white/10">
+              <span class="text-[10px] text-slate-500 font-mono">ID: ${item.id}</span>
+              <button 
+                class="btn-delete text-xs font-semibold text-rose-400 hover:text-rose-300 flex items-center gap-1 transition-colors py-1 px-2 rounded-lg hover:bg-rose-500/10 cursor-pointer"
+                data-id="${item.id}"
+                data-title="${item.title}"
+              >
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <span>Eliminar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Asignar listeners a botones de eliminar
+      document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = (btn as HTMLElement).dataset.id;
+          const title = (btn as HTMLElement).dataset.title;
+          if (confirm(`¿Estás seguro de que deseas eliminar el proyecto "${title}" de la página web?`)) {
+            await deleteProject(id);
+          }
+        });
+      });
+
+    } catch (err: any) {
+      showStatus(`Error de red al conectar con Supabase: ${err.message}`, 'error');
+    }
+  }
+
+  // 3. Eliminar Proyecto
+  async function deleteProject(id: string | undefined) {
+    if (!id) return;
+    try {
+      const { error } = await supabase.from('projects').delete().eq('id', id);
+      if (error) {
+        showStatus(`Error al eliminar: ${error.message}`, 'error');
+      } else {
+        showStatus('Proyecto eliminado correctamente de la web.', 'success');
+        loadProjects();
+      }
+    } catch (e: any) {
+      showStatus(`Error inesperado: ${e.message}`, 'error');
+    }
+  }
+
+  // 4. Modal de Subida con control de scroll
+  const openModal = () => {
+    uploadModal?.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    uploadModal?.classList.add('opacity-0', 'pointer-events-none');
+    uploadForm?.reset();
+    previewContainer?.classList.add('hidden');
+    previewPlaceholder?.classList.remove('hidden');
+    document.body.style.overflow = '';
+  };
+
+  btnOpenModal?.addEventListener('click', openModal);
+  btnCloseModal?.addEventListener('click', closeModal);
+  btnCancelModal?.addEventListener('click', closeModal);
+  modalBg?.addEventListener('click', closeModal);
+
+  // Cerrar con Escape
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && uploadModal && !uploadModal.classList.contains('pointer-events-none')) {
+      closeModal();
+    }
+  });
+
+  // Vista previa de imagen
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (imagePreview && e.target?.result) {
+          imagePreview.src = e.target.result as string;
+          previewContainer?.classList.remove('hidden');
+          previewPlaceholder?.classList.add('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // 5. Procesar Subida a Supabase
+  uploadForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const file = fileInput.files?.[0];
+    if (!file) {
+      alert('Por favor selecciona una foto del trabajo.');
+      return;
+    }
+
+    const titleInput = document.getElementById('p-title') as HTMLInputElement;
+    const catInput = document.getElementById('p-category') as HTMLSelectElement;
+    const specsInput = document.getElementById('p-specs') as HTMLInputElement;
+    const descInput = document.getElementById('p-desc') as HTMLTextAreaElement;
+
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = `
+      <div class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-r-transparent mr-2"></div>
+      Subiendo imagen y guardando...
+    `;
+
+    try {
+      // 1. Subir archivo al bucket 'portfolio' de Supabase Storage
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const filePath = `proyectos/${fileName}`;
+
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('portfolio')
+        .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+      if (storageError) {
+        if (storageError.message.includes('not found') || storageError.message.includes('Bucket')) {
+          throw new Error(`El almacén 'portfolio' no existe en Supabase. Asegúrate de haber ejecutado el script SQL en Supabase.`);
+        }
+        throw new Error(`Error en el almacenamiento de fotos: ${storageError.message}`);
+      }
+
+      // 2. Obtener URL pública de la imagen
+      const { data: urlData } = supabase.storage
+        .from('portfolio')
+        .getPublicUrl(filePath);
+
+      const imageUrl = urlData.publicUrl;
+
+      // 3. Guardar datos en la tabla 'projects'
+      const { error: insertError } = await supabase.from('projects').insert([
+        {
+          title: titleInput.value.trim(),
+          category: catInput.value,
+          image: imageUrl,
+          specs: specsInput.value.trim() || 'Vidrio Templado y Aluminio',
+          description: descInput.value.trim() || ''
+        }
+      ]);
+
+      if (insertError) {
+        throw new Error(`Error al registrar en la base de datos: ${insertError.message}`);
+      }
+
+      closeModal();
+      showStatus('¡Proyecto publicado exitosamente en la página web!', 'success');
+      loadProjects();
+
+    } catch (err: any) {
+      alert(`No se pudo completar la subida: ${err.message}`);
+    } finally {
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = `<span>Guardar y Publicar en la Web</span>`;
+    }
+  });
+
+  function showStatus(msg: string, type: 'success' | 'error' | 'warning') {
+    if (!statusAlert) return;
+    statusAlert.textContent = msg;
+    statusAlert.classList.remove('hidden', 'bg-emerald-500/10', 'text-emerald-300', 'border-emerald-500/20', 'bg-rose-500/10', 'text-rose-300', 'border-rose-500/20', 'bg-amber-500/10', 'text-amber-300', 'border-amber-500/20');
+    
+    if (type === 'success') {
+      statusAlert.classList.add('bg-emerald-500/10', 'text-emerald-300', 'border', 'border-emerald-500/20');
+    } else if (type === 'error') {
+      statusAlert.classList.add('bg-rose-500/10', 'text-rose-300', 'border', 'border-rose-500/20');
+    } else {
+      statusAlert.classList.add('bg-amber-500/10', 'text-amber-300', 'border', 'border-amber-500/20');
+    }
+
+    setTimeout(() => {
+      statusAlert.classList.add('hidden');
+    }, 6000);
+  }
+
+  // Inicializar al cargar
+  checkAuth();
+</script>

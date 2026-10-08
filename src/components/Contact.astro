@@ -1,8 +1,9 @@
 ---
 // Contact.astro
+import contactData from '../data/contact.json';
 ---
 
-<section id="contacto" class="relative overflow-hidden bg-slate-50 py-16 md:py-20">
+<section id="contacto" class="relative overflow-hidden bg-slate-50 py-16 md:py-20 scroll-mt-24">
   <!-- Decorative background elements -->
   <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
     <div class="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-cyan-200/40 blur-[120px]"></div>
@@ -40,7 +41,7 @@
               </div>
               <div>
                 <h4 class="font-semibold text-white">Teléfono</h4>
-                <p class="mt-1 text-slate-400">+52 (55) 1234 5678</p>
+                <p class="mt-1 text-slate-400">{contactData.phoneDisplay}</p>
               </div>
             </div>
             <div class="flex items-start gap-4">

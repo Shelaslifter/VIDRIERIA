@@ -3,36 +3,48 @@
     "id": 1,
     "category": "Vidrio Templado",
     "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1000&auto=format&fit=crop",
-    "title": "Fachada Comercial"
+    "title": "Fachada Comercial",
+    "description": "Estructura exterior en vidrio templado de alta resistencia con herrajes de acero inoxidable satinado para máximo impacto visual y seguridad.",
+    "specs": "Templado 10mm Claro • Herrajes Acero 304 • Sellado Estructural"
   },
   {
     "id": 2,
     "category": "Ventanas",
     "image": "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1000&auto=format&fit=crop",
-    "title": "Ventanas Panorámicas Residenciales"
+    "title": "Ventanas Panorámicas Residenciales",
+    "description": "Sistema corredizo con perfilería de aluminio negro mate de línea europea, ideal para iluminación natural y aislamiento acústico.",
+    "specs": "Línea Española Serie 4600 • Cristal Doble Térmico • Cierre Hermético"
   },
   {
     "id": 3,
     "category": "Barandales",
     "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop",
-    "title": "Barandal de Escalera Interior"
+    "title": "Barandal de Escalera Interior",
+    "description": "Diseño minimalista con soportes discretos tipo spigot de acero inoxidable, ofreciendo amplitud y elegancia a la arquitectura interior.",
+    "specs": "Templado 9.5mm Canto Pulido • Botones Acero Inox • Altura 90cm"
   },
   {
     "id": 4,
     "category": "Domos",
     "image": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1000&auto=format&fit=crop",
-    "title": "Domo Tragaluz Moderno"
+    "title": "Domo Tragaluz Moderno",
+    "description": "Cubierta cenital para patio interior con inclinación calculada para desagüe pluvial y película de control solar para mitigar el calor.",
+    "specs": "Laminado 6+6mm Filtrasol • Estructura Aluminio 3\" • Sellado Antifiltración"
   },
   {
     "id": 5,
     "category": "Vidrio Templado",
     "image": "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=1000&auto=format&fit=crop",
-    "title": "Divisiones de Oficina"
+    "title": "Divisiones de Oficina",
+    "description": "Cancelería acústica con película esmerilada personalizada que brinda privacidad sin perder el paso de luz natural.",
+    "specs": "Templado 9mm • Película Sandblast Franjeada • Puerta Abatible con Freno Hidráulico"
   },
   {
     "id": 6,
     "category": "Barandales",
     "image": "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1000&auto=format&fit=crop",
-    "title": "Balcón con Cristal Templado"
+    "title": "Balcón con Cristal Templado",
+    "description": "Barandal perimetral exterior resistente a vientos e intemperie, con pasamanos integrado de aluminio de perfil estilizado.",
+    "specs": "Templado 10mm Incoloro • Perfil Sujetador Pasamano • Anclaje Oculto"
   }
 ]
