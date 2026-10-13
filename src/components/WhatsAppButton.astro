@@ -1,11 +1,15 @@
 ---
 // WhatsAppButton.astro
-import contactData from '../data/contact.json';
+import { getSiteSettings } from '../lib/settings';
 
-const whatsappUrl = `https://wa.me/${contactData.whatsappNumber}?text=Hola,%20visit%C3%A9%20su%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20cotizar%20un%20proyecto`;
+const settings = await getSiteSettings();
+const whatsappNumber = settings.whatsapp_number;
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hola,%20visit%C3%A9%20su%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20cotizar%20un%20proyecto`;
 ---
 
 <a 
+  id="floating-whatsapp-btn"
+  data-phone={whatsappNumber}
   href={whatsappUrl}
   target="_blank"
   rel="noopener noreferrer"
@@ -25,3 +29,24 @@ const whatsappUrl = `https://wa.me/${contactData.whatsappNumber}?text=Hola,%20vi
     <span class="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 border-r border-t border-white/20 bg-slate-900/95"></span>
   </span>
 </a>
+
+<script>
+  import { supabase } from '../lib/supabase';
+  async function syncWhatsApp() {
+    try {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'whatsapp_number')
+        .single();
+      if (data && data.value) {
+        const btn = document.getElementById('floating-whatsapp-btn') as HTMLAnchorElement;
+        if (btn) {
+          const defaultMsg = 'Hola,%20visit%C3%A9%20su%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20cotizar%20un%20proyecto';
+          btn.href = `https://wa.me/${data.value}?text=${defaultMsg}`;
+        }
+      }
+    } catch (e) {}
+  }
+  syncWhatsApp();
+</script>

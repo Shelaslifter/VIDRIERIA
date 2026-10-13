@@ -2,5 +2,7 @@
   "whatsappNumber": "525627320080",
   "phoneDisplay": "+52 56 2732 0080",
   "email": "contacto@vidrieria.com",
-  "address": "Av. Principal 123, Zona Centro, Nezahualcóyotl"
+  "address": "Av. Principal 123, Zona Centro, Nezahualcóyotl",
+  "cityState": "Nezahualcóyotl, Estado de México",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120462.14731872583!2d-99.11708849495806!3d19.400551000674635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1e2e1327c593f%3A0xc30353c7c77c6f05!2sNezahualc%C3%B3yotl%2C%20Estado%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1700000000000!5m2!1ses-419!2smx"
 }

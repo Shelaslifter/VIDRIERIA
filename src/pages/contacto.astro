@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import ContactForm from '../components/Contact.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { getSiteSettings } from '../lib/settings';
+
+const settings = await getSiteSettings();
 ---
 
 <Layout title="Contacto y Cotización - VIDRIERIA">
@@ -37,13 +40,14 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
           <div class="relative overflow-hidden rounded-[2rem]">
             <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-linear-to-b from-slate-900/80 to-transparent px-8 pb-12 pt-8 text-white backdrop-blur-sm">
               <h3 class="text-xl font-bold tracking-tight drop-shadow-md">Nuestra Ubicación</h3>
-              <span class="hidden rounded-full bg-white/20 px-4 py-1 text-sm font-medium backdrop-blur-md ring-1 ring-white/30 sm:block">
-                Nezahualcóyotl, Estado de México
+              <span id="map-city-state" class="hidden rounded-full bg-white/20 px-4 py-1 text-sm font-medium backdrop-blur-md ring-1 ring-white/30 sm:block">
+                {settings.city_state}
               </span>
             </div>
             
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120462.14731872583!2d-99.11708849495806!3d19.400551000674635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1e2e1327c593f%3A0xc30353c7c77c6f05!2sNezahualc%C3%B3yotl%2C%20Estado%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1700000000000!5m2!1ses-419!2smx" 
+              id="map-iframe"
+              src={settings.map_embed_url} 
               class="h-96 w-full border-0 grayscale filter transition-all duration-700 group-hover:grayscale-0 md:h-[500px]"
               allowfullscreen="" 
               loading="lazy" 
@@ -61,3 +65,28 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
   
   <WhatsAppButton />
 </Layout>
+
+<script>
+  import { supabase } from '../lib/supabase';
+  async function syncMap() {
+    try {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('key, value')
+        .in('key', ['map_embed_url', 'city_state']);
+      if (data && data.length > 0) {
+        data.forEach((item: { key: string; value: string }) => {
+          if (item.key === 'map_embed_url') {
+            const iframe = document.getElementById('map-iframe') as HTMLIFrameElement;
+            if (iframe && iframe.src !== item.value) iframe.src = item.value;
+          }
+          if (item.key === 'city_state') {
+            const el = document.getElementById('map-city-state');
+            if (el) el.textContent = item.value;
+          }
+        });
+      }
+    } catch (e) {}
+  }
+  syncMap();
+</script>

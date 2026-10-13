@@ -1,10 +1,10 @@
 ---
 // BeforeAfter.astro
-import { Image } from 'astro:assets';
+import { getSiteSettings } from '../lib/settings';
 
-// Imágenes temporales: reemplazar por fotos reales de un trabajo (antes / después)
-const beforeImg = "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1600&auto=format&fit=crop";
-const afterImg = "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1600&auto=format&fit=crop";
+const settings = await getSiteSettings();
+const beforeImg = settings.before_img;
+const afterImg = settings.after_img;
 
 const labelClass = "pointer-events-none absolute top-4 z-10 rounded-full border border-white/20 bg-slate-950/50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-md";
 ---
@@ -19,23 +19,23 @@ const labelClass = "pointer-events-none absolute top-4 z-10 rounded-full border 
 
     <div class="ba-slider group relative aspect-[4/3] w-full select-none overflow-hidden rounded-3xl bg-slate-200 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/5 md:aspect-[16/9]">
       <!-- Después (base) -->
-      <Image
+      <img
+        id="ba-after-img"
         src={afterImg}
         alt="Después de la instalación"
-        width={1600}
-        height={900}
         class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
       />
       <span class={`${labelClass} right-4`}>Después</span>
 
       <!-- Antes (recortado con clip-path) -->
       <div class="ba-before absolute inset-0 z-20" style="clip-path: inset(0 50% 0 0);">
-        <Image
+        <img
+          id="ba-before-img"
           src={beforeImg}
           alt="Antes de la instalación"
-          width={1600}
-          height={900}
           class="pointer-events-none absolute inset-0 h-full w-full object-cover saturate-[.6] sepia-[.35]"
+          loading="lazy"
         />
         <span class={`${labelClass} left-4`}>Antes</span>
       </div>
@@ -63,6 +63,8 @@ const labelClass = "pointer-events-none absolute top-4 z-10 rounded-full border 
 </section>
 
 <script>
+  import { supabase } from '../lib/supabase';
+
   document.querySelectorAll<HTMLElement>('.ba-slider').forEach((slider) => {
     const range = slider.querySelector<HTMLInputElement>('.ba-range');
     const before = slider.querySelector<HTMLElement>('.ba-before');
@@ -78,4 +80,26 @@ const labelClass = "pointer-events-none absolute top-4 z-10 rounded-full border 
     range.addEventListener('input', update);
     update();
   });
+
+  async function syncBeforeAfter() {
+    try {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('key, value')
+        .in('key', ['before_img', 'after_img']);
+      if (data && data.length > 0) {
+        data.forEach((item: { key: string; value: string }) => {
+          if (item.key === 'before_img') {
+            const img = document.getElementById('ba-before-img') as HTMLImageElement;
+            if (img && img.src !== item.value) img.src = item.value;
+          }
+          if (item.key === 'after_img') {
+            const img = document.getElementById('ba-after-img') as HTMLImageElement;
+            if (img && img.src !== item.value) img.src = item.value;
+          }
+        });
+      }
+    } catch (e) {}
+  }
+  syncBeforeAfter();
 </script>

@@ -1,18 +1,20 @@
 ---
 // Hero.astro
-import { Image } from 'astro:assets';
+import { getSiteSettings } from '../lib/settings';
+
+const settings = await getSiteSettings();
+const heroBg = settings.hero_bg;
 ---
 
 <section id="inicio" class="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-slate-950 pb-32 pt-32">
   <!-- Fondo con efecto Ken Burns -->
   <div class="absolute inset-0 z-0">
-    <Image
-      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop"
+    <img
+      id="hero-bg-img"
+      src={heroBg}
       alt="Fachada moderna con vidrio templado"
-      width={2070}
-      height={1380}
-      loading="eager"
       class="h-full w-full object-cover object-center motion-safe:animate-ken-burns"
+      loading="eager"
     />
     <!-- Degradado para legibilidad + brillo cian sutil -->
     <div class="absolute inset-0 bg-linear-to-b from-slate-950/80 via-slate-950/60 to-slate-950/90"></div>
@@ -50,3 +52,23 @@ import { Image } from 'astro:assets';
     </div>
   </div>
 </section>
+
+<script>
+  import { supabase } from '../lib/supabase';
+  async function syncHeroBg() {
+    try {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'hero_bg')
+        .single();
+      if (data && data.value) {
+        const img = document.getElementById('hero-bg-img') as HTMLImageElement;
+        if (img && img.src !== data.value) {
+          img.src = data.value;
+        }
+      }
+    } catch (e) {}
+  }
+  syncHeroBg();
+</script>

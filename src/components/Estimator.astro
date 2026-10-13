@@ -1,6 +1,9 @@
 ---
 // Estimator.astro - Cotizador interactivo express con envío automático a WhatsApp
-import contactData from '../data/contact.json';
+import { getSiteSettings } from '../lib/settings';
+
+const settings = await getSiteSettings();
+const whatsappNumber = settings.whatsapp_number;
 ---
 
 <section id="cotizador" class="relative py-16 md:py-20 overflow-hidden scroll-mt-24">
@@ -153,7 +156,7 @@ import contactData from '../data/contact.json';
         <div class="flex flex-col sm:flex-row items-center gap-4">
           <a 
             id="whatsapp-estimate-btn" 
-            data-wa-number={contactData.whatsappNumber}
+            data-wa-number={whatsappNumber}
             href="#" 
             target="_blank" 
             rel="noopener noreferrer"
@@ -179,6 +182,8 @@ import contactData from '../data/contact.json';
 </section>
 
 <script>
+  import { supabase } from '../lib/supabase';
+
   let selectedProject = "Cancel de Baño";
   let selectedGlass = "Templado Claro (6mm a 9.5mm)";
 
@@ -254,8 +259,23 @@ import contactData from '../data/contact.json';
   heightInput?.addEventListener('input', updatePreview);
   notesInput?.addEventListener('input', updatePreview);
 
+  async function syncEstimatorWhatsApp() {
+    try {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'whatsapp_number')
+        .single();
+      if (data && data.value && waBtn) {
+        waBtn.dataset.waNumber = data.value;
+        updatePreview();
+      }
+    } catch (e) {}
+  }
+
   // Inicializar estado
   updateActiveClasses(projectButtons, selectedProject);
   updateActiveClasses(glassButtons, selectedGlass);
   updatePreview();
+  syncEstimatorWhatsApp();
 </script>
