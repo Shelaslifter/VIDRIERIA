@@ -31,19 +31,15 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hola,%20visit%C3%A9%20
 </a>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { getCachedSiteSettings } from '../lib/settings';
   async function syncWhatsApp() {
     try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('value')
-        .eq('key', 'whatsapp_number')
-        .single();
-      if (data && data.value) {
+      const settings = await getCachedSiteSettings();
+      if (settings && settings.whatsapp_number) {
         const btn = document.getElementById('floating-whatsapp-btn') as HTMLAnchorElement;
         if (btn) {
           const defaultMsg = 'Hola,%20visit%C3%A9%20su%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20cotizar%20un%20proyecto';
-          btn.href = `https://wa.me/${data.value}?text=${defaultMsg}`;
+          btn.href = `https://wa.me/${settings.whatsapp_number}?text=${defaultMsg}`;
         }
       }
     } catch (e) {}

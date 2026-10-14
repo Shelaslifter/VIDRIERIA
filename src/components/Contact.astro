@@ -61,7 +61,7 @@ const settings = await getSiteSettings();
 
       <!-- Contact Form -->
       <div class="p-10 lg:w-3/5 lg:p-16">
-        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Mensaje enviado. Esto es una demostración.');">
+        <form id="main-contact-form" data-wa={settings.whatsapp_number} class="space-y-6">
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label for="nombre" class="block text-sm font-medium text-slate-700">Nombre completo</label>
@@ -130,30 +130,50 @@ const settings = await getSiteSettings();
 </section>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { getCachedSiteSettings } from '../lib/settings';
+
+  const form = document.getElementById('main-contact-form') as HTMLFormElement;
+
   async function syncContactInfo() {
     try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('key, value')
-        .in('key', ['address', 'phone_display', 'email']);
-      if (data && data.length > 0) {
-        data.forEach((item: { key: string; value: string }) => {
-          if (item.key === 'address') {
-            const el = document.getElementById('contact-address');
-            if (el) el.textContent = item.value;
-          }
-          if (item.key === 'phone_display') {
-            const el = document.getElementById('contact-phone');
-            if (el) el.textContent = item.value;
-          }
-          if (item.key === 'email') {
-            const el = document.getElementById('contact-email');
-            if (el) el.textContent = item.value;
-          }
-        });
+      const settings = await getCachedSiteSettings();
+      if (settings) {
+        if (settings.address) {
+          const el = document.getElementById('contact-address');
+          if (el) el.textContent = settings.address;
+        }
+        if (settings.phone_display) {
+          const el = document.getElementById('contact-phone');
+          if (el) el.textContent = settings.phone_display;
+        }
+        if (settings.email) {
+          const el = document.getElementById('contact-email');
+          if (el) el.textContent = settings.email;
+        }
+        if (form && settings.whatsapp_number) {
+          form.dataset.wa = settings.whatsapp_number;
+        }
       }
     } catch (e) {}
   }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombreInput = document.getElementById('nombre') as HTMLInputElement;
+    const telInput = document.getElementById('telefono') as HTMLInputElement;
+    const servInput = document.getElementById('servicio') as HTMLSelectElement;
+    const msgInput = document.getElementById('mensaje') as HTMLTextAreaElement;
+
+    const nombre = nombreInput?.value.trim() || '';
+    const telefono = telInput?.value.trim() || '';
+    const servicio = servInput?.selectedOptions[0]?.text || servInput?.value || 'General';
+    const mensaje = msgInput?.value.trim() || '';
+
+    const waNumber = form.dataset.wa || '525627320080';
+    const texto = `Hola, soy *${nombre}* (${telefono}). Me gustaría solicitar una cotización para: *${servicio}*.\n\n*Detalles del proyecto:*\n${mensaje}`;
+
+    window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(texto)}`, '_blank');
+  });
+
   syncContactInfo();
 </script>

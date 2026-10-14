@@ -72,28 +72,23 @@ const year = new Date().getFullYear();
 </footer>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { getCachedSiteSettings } from '../lib/settings';
   async function syncFooterInfo() {
     try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('key, value')
-        .in('key', ['address', 'phone_display', 'email']);
-      if (data && data.length > 0) {
-        data.forEach((item: { key: string; value: string }) => {
-          if (item.key === 'address') {
-            const el = document.getElementById('footer-address');
-            if (el) el.textContent = item.value;
-          }
-          if (item.key === 'phone_display') {
-            const el = document.getElementById('footer-phone');
-            if (el) el.textContent = item.value;
-          }
-          if (item.key === 'email') {
-            const el = document.getElementById('footer-email');
-            if (el) el.textContent = item.value;
-          }
-        });
+      const settings = await getCachedSiteSettings();
+      if (settings) {
+        if (settings.address) {
+          const el = document.getElementById('footer-address');
+          if (el) el.textContent = settings.address;
+        }
+        if (settings.phone_display) {
+          const el = document.getElementById('footer-phone');
+          if (el) el.textContent = settings.phone_display;
+        }
+        if (settings.email) {
+          const el = document.getElementById('footer-email');
+          if (el) el.textContent = settings.email;
+        }
       }
     } catch (e) {}
   }

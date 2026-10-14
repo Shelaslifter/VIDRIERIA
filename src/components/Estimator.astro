@@ -182,7 +182,7 @@ const whatsappNumber = settings.whatsapp_number;
 </section>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { getCachedSiteSettings } from '../lib/settings';
 
   let selectedProject = "Cancel de Baño";
   let selectedGlass = "Templado Claro (6mm a 9.5mm)";
@@ -261,13 +261,9 @@ const whatsappNumber = settings.whatsapp_number;
 
   async function syncEstimatorWhatsApp() {
     try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('value')
-        .eq('key', 'whatsapp_number')
-        .single();
-      if (data && data.value && waBtn) {
-        waBtn.dataset.waNumber = data.value;
+      const settings = await getCachedSiteSettings();
+      if (settings && settings.whatsapp_number && waBtn) {
+        waBtn.dataset.waNumber = settings.whatsapp_number;
         updatePreview();
       }
     } catch (e) {}

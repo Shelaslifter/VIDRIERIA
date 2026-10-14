@@ -54,18 +54,14 @@ const heroBg = settings.hero_bg;
 </section>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { getCachedSiteSettings } from '../lib/settings';
   async function syncHeroBg() {
     try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('value')
-        .eq('key', 'hero_bg')
-        .single();
-      if (data && data.value) {
+      const settings = await getCachedSiteSettings();
+      if (settings && settings.hero_bg) {
         const img = document.getElementById('hero-bg-img') as HTMLImageElement;
-        if (img && img.src !== data.value) {
-          img.src = data.value;
+        if (img && img.src !== settings.hero_bg) {
+          img.src = settings.hero_bg;
         }
       }
     } catch (e) {}

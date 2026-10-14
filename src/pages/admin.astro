@@ -68,10 +68,6 @@ import Logo from '../components/Logo.astro';
               Entrar al Panel
             </button>
           </form>
-
-          <p class="mt-6 text-xs text-slate-500">
-            * Clave predeterminada inicial: <code class="text-cyan-400 font-mono">admin123</code>
-          </p>
         </div>
       </div>
 
@@ -284,8 +280,8 @@ import Logo from '../components/Logo.astro';
                 <img id="admin-after-preview" src="" alt="Después" class="absolute inset-0 h-full w-full object-cover pointer-events-none" />
                 
                 <!-- Imagen Antes (Capa con recorte) -->
-                <div class="absolute inset-y-0 left-0 overflow-hidden w-1/2" id="admin-before-clipper">
-                  <img id="admin-before-preview" src="" alt="Antes" class="absolute inset-0 h-full w-full max-w-none object-cover pointer-events-none" />
+                <div class="absolute inset-0" id="admin-before-clipper" style="clip-path: inset(0 50% 0 0);">
+                  <img id="admin-before-preview" src="" alt="Antes" class="absolute inset-0 h-full w-full object-cover pointer-events-none" />
                 </div>
 
                 <!-- Línea Divisoria -->
@@ -704,7 +700,15 @@ import Logo from '../components/Logo.astro';
   import { supabase, type ProjectItem } from '../lib/supabase';
   import { DEFAULT_SETTINGS, type SiteSettings } from '../lib/settings';
 
-  const ADMIN_PASSWORD = "admin123";
+  const ADMIN_PIN = import.meta.env.PUBLIC_ADMIN_PIN || "admin123";
+
+  async function hashPin(pin: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(pin);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 
   // Elementos de Autenticación
   const authScreen = document.getElementById('auth-screen');
@@ -785,9 +789,15 @@ import Logo from '../components/Logo.astro';
     }
   };
 
-  authForm?.addEventListener('submit', (e) => {
+  authForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (adminPin.value === ADMIN_PASSWORD) {
+    const entered = adminPin.value.trim();
+    const [enteredHash, targetHash] = await Promise.all([
+      hashPin(entered),
+      hashPin(ADMIN_PIN)
+    ]);
+
+    if (enteredHash === targetHash) {
       sessionStorage.setItem('vidrieria_admin_auth', 'true');
       authError?.classList.add('hidden');
       checkAuth();
@@ -1200,7 +1210,7 @@ import Logo from '../components/Logo.astro';
   // ==========================================
   adminBaRange?.addEventListener('input', () => {
     const val = adminBaRange.value;
-    if (adminBeforeClipper) adminBeforeClipper.style.width = `${val}%`;
+    if (adminBeforeClipper) adminBeforeClipper.style.clipPath = `inset(0 ${100 - Number(val)}% 0 0)`;
     if (adminBaDivider) adminBaDivider.style.left = `${val}%`;
   });
 

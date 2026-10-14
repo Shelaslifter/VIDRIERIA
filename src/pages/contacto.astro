@@ -67,24 +67,19 @@ const settings = await getSiteSettings();
 </Layout>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { getCachedSiteSettings } from '../lib/settings';
   async function syncMap() {
     try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('key, value')
-        .in('key', ['map_embed_url', 'city_state']);
-      if (data && data.length > 0) {
-        data.forEach((item: { key: string; value: string }) => {
-          if (item.key === 'map_embed_url') {
-            const iframe = document.getElementById('map-iframe') as HTMLIFrameElement;
-            if (iframe && iframe.src !== item.value) iframe.src = item.value;
-          }
-          if (item.key === 'city_state') {
-            const el = document.getElementById('map-city-state');
-            if (el) el.textContent = item.value;
-          }
-        });
+      const settings = await getCachedSiteSettings();
+      if (settings) {
+        if (settings.map_embed_url) {
+          const iframe = document.getElementById('map-iframe') as HTMLIFrameElement;
+          if (iframe && iframe.src !== settings.map_embed_url) iframe.src = settings.map_embed_url;
+        }
+        if (settings.city_state) {
+          const el = document.getElementById('map-city-state');
+          if (el) el.textContent = settings.city_state;
+        }
       }
     } catch (e) {}
   }
