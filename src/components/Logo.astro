@@ -1,5 +1,5 @@
 ---
-// Logo.astro — marca reutilizable (Navbar y Footer)
+// Logo.astro — Logotipo oficial de DELTALUM (Aluminio y Vidrio en General)
 interface Props {
   class?: string;
 }
@@ -7,15 +7,23 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<a href="/" class={`group/logo inline-flex items-center gap-2.5 ${className}`} aria-label="VIDRIERIA - Ir al inicio">
-  <span class="grid h-9 w-9 place-items-center rounded-xl bg-linear-to-br from-cyan-400 to-blue-600 shadow-lg shadow-cyan-500/30 ring-1 ring-white/20 transition-transform duration-500 ease-premium group-hover/logo:rotate-6 group-hover/logo:scale-105">
-    <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-      <rect x="4" y="3" width="16" height="18" rx="1.5" />
-      <path d="M12 3v18M4 12h16" />
-      <path d="M7 6.5l2.5 2.5" stroke-linecap="round" opacity="0.7" />
+<a href="/" class={`group/logo inline-flex items-center gap-3 ${className}`} aria-label="DELTALUM - Ir al inicio">
+  <!-- Isotipo Vectorial Oficial Deltalum -->
+  <span class="relative flex h-10 w-11 shrink-0 items-center justify-center rounded-xl bg-white/95 p-1.5 shadow-lg shadow-black/25 ring-1 ring-white/30 transition-transform duration-500 ease-premium group-hover/logo:scale-105">
+    <svg class="h-full w-full" viewBox="0 0 100 90" fill="none" aria-hidden="true">
+      <polygon points="4,86 50,4 58.5,19 21,86" fill="#1B365D" />
+      <polygon points="25.5,86 61,23.5 69.5,38.5 42.5,86" fill="#0077C8" />
+      <polygon points="47,86 72,43 96,86" fill="#D9232A" />
     </svg>
   </span>
-  <span class="text-xl font-bold tracking-tight text-white">
-    VIDRIE<span class="text-cyan-400">RIA</span>
-  </span>
+
+  <!-- Tipografía Oficial Deltalum -->
+  <div class="flex flex-col leading-none">
+    <span class="text-xl sm:text-2xl font-black tracking-tight text-[#EF4444] drop-shadow-[0_1px_8px_rgba(239,68,68,0.25)]">
+      DELTALUM
+    </span>
+    <span class="mt-0.5 text-[9px] sm:text-[10px] font-bold tracking-[0.12em] text-slate-200 uppercase">
+      Aluminio y Vidrio en General
+    </span>
+  </div>
 </a>

@@ -1,5 +1,5 @@
 ---
-// Features.astro
+// Features.astro — Pilares de confianza + Franja y Visor Oficial de Certificaciones CUPRUM / EUROVENT
 interface Feature {
   title: string;
   description: string;
@@ -10,23 +10,23 @@ const iconClass = 'h-6 w-6 text-cyan-600 transition-colors duration-500 group-ho
 
 const features: Feature[] = [
   {
-    title: "Materiales Premium",
-    description: "Cristal templado y aluminio de la más alta resistencia y durabilidad.",
+    title: "Taller Certificado Eurovent",
+    description: "Avalados oficialmente por Grupo Cuprum en líneas Classic, Premium y Alto Desempeño.",
     icon: `<svg class="${iconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>`
   },
   {
-    title: "Instaladores Expertos",
-    description: "Mano de obra calificada con años de experiencia en cancelería.",
+    title: "+18 Años de Experiencia",
+    description: "Mano de obra calificada y atención directa en San Luis Potosí capital.",
     icon: `<svg class="${iconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>`
   },
   {
-    title: "Entregas Puntuales",
-    description: "Respetamos los tiempos acordados para que tu obra no se detenga.",
-    icon: `<svg class="${iconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+    title: "Cotización Sin Costo",
+    description: "Acudimos a tomar medidas a tu domicilio u obra sin ningún compromiso.",
+    icon: `<svg class="${iconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>`
   },
   {
-    title: "Garantía Total",
-    description: "Respaldamos cada uno de nuestros trabajos para tu tranquilidad.",
+    title: "1 Año de Garantía",
+    description: "Respaldamos cada instalación, herraje y sellado. Aceptamos tarjetas y facturamos.",
     icon: `<svg class="${iconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>`
   }
 ];
@@ -34,11 +34,13 @@ const features: Feature[] = [
 
 <!-- Panel de cristal que se superpone al borde inferior del Hero -->
 <section class="relative z-20 -mt-20 px-6 lg:px-8">
-  <div class="mx-auto max-w-7xl rounded-3xl border border-white/60 bg-white/85 p-3 shadow-2xl shadow-slate-900/10 backdrop-blur-xl backdrop-saturate-150 sm:p-4">
+  <div class="mx-auto max-w-7xl rounded-3xl border border-white/60 bg-white/90 p-4 shadow-2xl shadow-slate-900/10 backdrop-blur-xl backdrop-saturate-150 sm:p-6">
+    
+    <!-- Grid de 4 pilares -->
     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
       {features.map((feature) => (
-        <div class="group flex flex-col items-center rounded-2xl p-6 text-center transition-all duration-500 ease-premium hover:-translate-y-1 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 lg:p-8">
-          <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-cyan-50 ring-1 ring-cyan-100 transition-all duration-500 ease-premium group-hover:scale-110 group-hover:bg-linear-to-br group-hover:from-cyan-500 group-hover:to-blue-600 group-hover:shadow-lg group-hover:shadow-cyan-500/30 group-hover:ring-transparent">
+        <div class="group flex flex-col items-center rounded-2xl p-5 text-center transition-all duration-500 ease-premium hover:-translate-y-1 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 lg:p-6">
+          <div class="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-cyan-50 ring-1 ring-cyan-100 transition-all duration-500 ease-premium group-hover:scale-110 group-hover:bg-linear-to-br group-hover:from-cyan-500 group-hover:to-blue-600 group-hover:shadow-lg group-hover:shadow-cyan-500/30 group-hover:ring-transparent">
             <Fragment set:html={feature.icon} />
           </div>
           <h3 class="text-lg font-bold tracking-tight text-slate-900">{feature.title}</h3>
@@ -46,5 +48,205 @@ const features: Feature[] = [
         </div>
       ))}
     </div>
+
+    <!-- FUSIÓN A + B: Cintillo Oficial de Certificación CUPRUM / EUROVENT + Visor de Placas Reales -->
+    <div class="mt-4 rounded-2xl border border-slate-200/90 bg-linear-to-r from-slate-950 via-slate-900 to-slate-950 p-5 sm:p-6 text-white shadow-inner">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+        
+        <!-- Logos Vectoriales Oficiales CUPRUM y EUROVENT -->
+        <div class="flex flex-col sm:flex-row items-center gap-5 sm:gap-8 text-center sm:text-left">
+          <div class="flex items-center gap-5 border-b sm:border-b-0 sm:border-r border-white/15 pb-4 sm:pb-0 sm:pr-7">
+            <!-- SVG Logo CUPRUM -->
+            <div class="flex items-center gap-2" title="Grupo Cuprum">
+              <svg class="h-8 w-8 text-sky-400 shrink-0" viewBox="0 0 40 40" fill="none">
+                <path d="M6 10L18 20L6 30" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 6L32 20L14 34" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="text-lg sm:text-xl font-black tracking-[0.18em] text-white">CUPRUM</span>
+            </div>
+
+            <!-- SVG Sello TALLER CERTIFICADO EUROVENT -->
+            <div class="flex items-center gap-2.5 pl-2" title="Taller Certificado Eurovent">
+              <svg class="h-9 w-9 shrink-0" viewBox="0 0 44 44" fill="none">
+                <rect x="4" y="4" width="15" height="15" stroke="#F59E0B" stroke-width="2.5"/>
+                <rect x="23" y="4" width="15" height="15" stroke="#E2E8F0" stroke-width="2.5"/>
+                <rect x="4" y="23" width="15" height="15" stroke="#E2E8F0" stroke-width="2.5"/>
+                <rect x="23" y="23" width="15" height="15" stroke="#F59E0B" stroke-width="2.5"/>
+                <rect x="15" y="15" width="12" height="12" fill="#0F172A" stroke="#38BDF8" stroke-width="2"/>
+              </svg>
+              <div class="flex flex-col text-left leading-none">
+                <span class="text-[9px] font-bold tracking-[0.2em] text-amber-400 uppercase">Taller Certificado</span>
+                <span class="text-base sm:text-lg font-serif font-bold tracking-wider text-white mt-0.5">EUROVENT<sup class="text-[9px] text-amber-400 ml-0.5">®</sup></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Texto de respaldo -->
+          <div class="max-w-md">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-400/15 px-2.5 py-0.5 text-[11px] font-bold text-amber-300 border border-amber-400/25 mb-1.5">
+              ★ Respaldo Oficial Verificado
+            </span>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Reconocimiento otorgado a <strong class="text-white">Deltalum (Humberto Jiménez)</strong> por concluir satisfactoriamente la certificación en <strong class="text-cyan-300">Líneas de Alto Desempeño, Premium y Classic</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Miniaturas Interactivas de las Placas + Botón para abrir Modal -->
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="flex -space-x-3">
+            <button
+              type="button"
+              class="open-cert-modal group/thumb relative h-14 w-12 overflow-hidden rounded-xl border-2 border-white/30 bg-slate-800 shadow-lg transition-transform duration-300 hover:z-10 hover:scale-110 hover:border-cyan-400 cursor-pointer"
+              data-cert="0"
+              aria-label="Ver placa de certificación Alto Desempeño 2018"
+            >
+              <img src="/certificaciones/certificado-eurovent-alto-desempeno.jpg" alt="Certificado Eurovent Alto Desempeño" class="h-full w-full object-cover" loading="lazy" />
+            </button>
+            <button
+              type="button"
+              class="open-cert-modal group/thumb relative h-14 w-12 overflow-hidden rounded-xl border-2 border-white/30 bg-slate-800 shadow-lg transition-transform duration-300 hover:z-10 hover:scale-110 hover:border-cyan-400 cursor-pointer"
+              data-cert="1"
+              aria-label="Ver placa de certificación Premium y Classic"
+            >
+              <img src="/certificaciones/certificado-eurovent-premium-classic.jpg" alt="Certificado Eurovent Premium y Classic" class="h-full w-full object-cover" loading="lazy" />
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="open-cert-modal inline-flex items-center gap-2 rounded-xl border border-cyan-400/40 bg-cyan-500/15 px-4 py-3 text-xs sm:text-sm font-bold text-cyan-200 backdrop-blur-md transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:shadow-lg hover:shadow-cyan-500/25 cursor-pointer"
+            data-cert="all"
+          >
+            <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <span>Ver Certificados</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
+
+<!-- MODAL DE CERTIFICACIONES OFICIALES (Se teletransporta a document.body) -->
+<div
+  id="cert-modal"
+  class="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 opacity-0 pointer-events-none transition-all duration-300 ease-premium overflow-y-auto"
+  aria-hidden="true"
+  role="dialog"
+  aria-label="Certificaciones Oficiales Grupo Cuprum y Eurovent"
+>
+  <div id="cert-modal-backdrop" class="absolute inset-0 bg-slate-950/90 backdrop-blur-xl"></div>
+
+  <div
+    id="cert-modal-container"
+    class="relative z-10 flex w-full max-w-4xl max-h-[92vh] flex-col overflow-hidden rounded-3xl border border-white/20 bg-slate-900 text-white shadow-2xl transition-all duration-300 scale-95"
+  >
+    <!-- Header del Modal -->
+    <div class="flex items-center justify-between border-b border-white/10 px-6 py-4 bg-slate-950/60">
+      <div class="flex items-center gap-3">
+        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-400/15 text-amber-400 ring-1 ring-amber-400/30 font-bold">
+          ★
+        </span>
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-white">Reconocimientos Oficiales Grupo Cuprum</h3>
+          <p class="text-xs text-slate-400">Placas físicas otorgadas a Deltalum • Humberto Jiménez Herrera</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="cert-modal-close"
+        class="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white transition-colors cursor-pointer"
+        aria-label="Cerrar ventana"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Cuerpo con las 2 placas en alta resolución -->
+    <div class="overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <!-- Placa 1 -->
+      <div class="flex flex-col rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+        <div class="overflow-hidden rounded-xl bg-black aspect-[4/5]">
+          <img
+            src="/certificaciones/certificado-eurovent-alto-desempeno.jpg"
+            alt="Reconocimiento Cuprum Líneas de Alto Desempeño Eurovent - Humberto Jiménez Herrera Deltalum"
+            class="h-full w-full object-contain"
+          />
+        </div>
+        <div class="mt-4 text-center">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-400">Certificación 2018</span>
+          <h4 class="text-sm font-bold text-white mt-0.5">Líneas de Alto Desempeño Eurovent</h4>
+          <p class="text-xs text-slate-400 mt-1">Otorgado a Humberto Jiménez Herrera • DELTALUM</p>
+        </div>
+      </div>
+
+      <!-- Placa 2 -->
+      <div class="flex flex-col rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+        <div class="overflow-hidden rounded-xl bg-black aspect-[4/5]">
+          <img
+            src="/certificaciones/certificado-eurovent-premium-classic.jpg"
+            alt="Certificado Taller Eurovent Premium y Classic - Deltalum"
+            class="h-full w-full object-contain"
+          />
+        </div>
+        <div class="mt-4 text-center">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Certificación Oficial</span>
+          <h4 class="text-sm font-bold text-white mt-0.5">Taller Certificado Línea Eurovent Premium y Classic</h4>
+          <p class="text-xs text-slate-400 mt-1">Reconocimiento de Grupo Cuprum a DELTALUM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const certModal = document.getElementById('cert-modal');
+  const certBackdrop = document.getElementById('cert-modal-backdrop');
+  const certContainer = document.getElementById('cert-modal-container');
+  const certClose = document.getElementById('cert-modal-close');
+  const openCertBtns = document.querySelectorAll('.open-cert-modal');
+
+  // Teletransportar a document.body para evitar problemas de posicionamiento por data-aos
+  if (certModal && certModal.parentElement !== document.body) {
+    document.body.appendChild(certModal);
+  }
+
+  const openCert = () => {
+    if (!certModal) return;
+    if (certModal.parentElement !== document.body) {
+      document.body.appendChild(certModal);
+    }
+    certModal.classList.remove('opacity-0', 'pointer-events-none');
+    certModal.setAttribute('aria-hidden', 'false');
+    certContainer?.classList.remove('scale-95');
+    certContainer?.classList.add('scale-100');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeCert = () => {
+    if (!certModal) return;
+    certModal.classList.add('opacity-0', 'pointer-events-none');
+    certModal.setAttribute('aria-hidden', 'true');
+    certContainer?.classList.add('scale-95');
+    certContainer?.classList.remove('scale-100');
+    document.body.style.overflow = '';
+  };
+
+  openCertBtns.forEach((btn) => btn.addEventListener('click', openCert));
+  certClose?.addEventListener('click', closeCert);
+  certBackdrop?.addEventListener('click', closeCert);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && certModal && !certModal.classList.contains('pointer-events-none')) {
+      closeCert();
+    }
+  });
+</script>

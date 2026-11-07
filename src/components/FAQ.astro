@@ -2,20 +2,20 @@
 // FAQ.astro
 const faqs = [
   {
-    question: "¿Cuánto tiempo tarda la instalación de cancelería?",
-    answer: "El tiempo de instalación depende de la magnitud del proyecto. Generalmente, para canceles de baño o ventanas estándar, el proceso toma de 1 a 2 días hábiles una vez fabricado el cristal (lo cual toma entre 5 y 7 días)."
+    question: "¿La visita para tomar medidas y cotizar tiene algún costo?",
+    answer: "¡Es totalmente sin costo! En Deltalum acudimos a tu domicilio o proyecto en San Luis Potosí capital para tomar medidas exactas y entregarte tu cotización sin compromiso."
   },
   {
-    question: "¿Ofrecen garantía en el vidrio templado?",
-    answer: "Sí, todos nuestros cristales templados cuentan con garantía contra defectos de fabricación. Además, ofrecemos garantía en la instalación y sellado para asegurar que no haya filtraciones."
+    question: "¿Qué garantía ofrecen y cuánto tiempo tarda la entrega?",
+    answer: "Todos nuestros trabajos cuentan con 1 año de garantía tanto en materiales como en instalación y sellado. El tiempo de entrega depende del tipo y tamaño del trabajo a realizar."
   },
   {
-    question: "¿Manejan pagos con tarjeta o meses sin intereses?",
-    answer: "Aceptamos pagos en efectivo, transferencias bancarias y tarjetas de crédito/débito. Constantemente tenemos promociones de meses sin intereses con tarjetas participantes, ¡pregunta a tu asesor!"
+    question: "¿Qué formas de pago aceptan y emiten factura?",
+    answer: "Aceptamos todo tipo de pago: efectivo, transferencias bancarias y tarjetas de crédito o débito. Además, sí emitimos factura fiscal (CFDI) si la requieres."
   },
   {
-    question: "¿Pueden hacer diseños a medida o fuera de lo común?",
-    answer: "¡Por supuesto! Somos especialistas en proyectos personalizados. Si tienes un diseño especial para un domo, barandal o fachada, nosotros lo calculamos, diseñamos y lo hacemos realidad."
+    question: "¿Qué tipo de trabajos en vidrio y aluminio realizan?",
+    answer: "Realizamos todo tipo de proyectos a medida: canceles de baño en vidrio templado, ventanas y puertas de aluminio, barandales, domos, espejos, fachadas comerciales y reparaciones o mantenimiento."
   }
 ];
 ---
@@ -49,6 +49,25 @@ const faqs = [
           </div>
         </details>
       ))}
+    </div>
+
+    <!-- Banner de Cierre Ligero (Sin duplicar el formulario de /contacto) -->
+    <div class="mt-14 flex flex-col sm:flex-row items-center justify-between gap-6 rounded-3xl border border-slate-200/80 bg-white/90 p-6 sm:px-8 sm:py-6 shadow-xl shadow-slate-900/5 backdrop-blur-md">
+      <div class="text-center sm:text-left">
+        <h3 class="text-lg font-bold text-slate-900">¿Listo para cotizar tu proyecto sin costo?</h3>
+        <p class="text-sm text-slate-500 mt-0.5">Visítanos en Av. del Sauce # 891-B, Rancho de la Cruz o agenda tu toma de medidas hoy.</p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
+        <a href="#cotizador" class="btn-primary px-5 py-3 text-xs sm:text-sm font-bold">
+          Cotizador Express
+        </a>
+        <a href="/contacto" class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-slate-50 px-5 py-3 text-xs sm:text-sm font-semibold text-slate-700 transition-colors hover:border-cyan-500 hover:text-cyan-700">
+          <span>Ver Mapa y Contacto</span>
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12" />
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>

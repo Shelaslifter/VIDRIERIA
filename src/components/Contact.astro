@@ -55,6 +55,16 @@ const settings = await getSiteSettings();
                 <p id="contact-email" class="mt-1 text-slate-400">{settings.email}</p>
               </div>
             </div>
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 ring-1 ring-white/10">
+                <svg class="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-white">Horario de Atención</h4>
+                <p class="mt-1 text-sm text-slate-400">Lunes a Viernes: 9:00 am – 6:00 pm</p>
+                <p class="text-sm text-slate-400">Sábado: 9:00 am – 2:00 pm</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -81,7 +91,7 @@ const settings = await getSiteSettings();
                 id="telefono" 
                 name="telefono" 
                 class="input-field mt-2" 
-                placeholder="55 1234 5678" 
+                placeholder="444 123 4567" 
                 required 
               />
             </div>
@@ -169,7 +179,7 @@ const settings = await getSiteSettings();
     const servicio = servInput?.selectedOptions[0]?.text || servInput?.value || 'General';
     const mensaje = msgInput?.value.trim() || '';
 
-    const waNumber = form.dataset.wa || '525627320080';
+    const waNumber = form.dataset.wa || '524441353312';
     const texto = `Hola, soy *${nombre}* (${telefono}). Me gustaría solicitar una cotización para: *${servicio}*.\n\n*Detalles del proyecto:*\n${mensaje}`;
 
     window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(texto)}`, '_blank');
