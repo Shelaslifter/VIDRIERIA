@@ -1617,6 +1617,41 @@ import Logo from '../components/Logo.astro';
   // ==========================================
   // 7. PESTAÑA 4: CONTACTO Y MAPA (LÓGICA)
   // ==========================================
+    function convertGoogleMapsToEmbed(input: string): string {
+    let url = input.trim();
+    if (!url) return '';
+
+    // Si pegó el código iframe completo: <iframe src="..." ...>
+    if (url.includes('<iframe') && url.includes('src="')) {
+      const match = url.match(/src="([^"]+)"/);
+      if (match && match[1]) return match[1];
+    }
+
+    // Si ya es un enlace embed oficial
+    if (url.includes('google.com/maps/embed') || (url.includes('maps.google.com') && url.includes('output=embed'))) {
+      return url;
+    }
+
+    // Si es un enlace directo de Google Maps: /place/.../@lat,lng... o /@lat,lng...
+    const coordsMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coordsMatch) {
+      const lat = coordsMatch[1];
+      const lng = coordsMatch[2];
+      return `https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=17&output=embed`;
+    }
+
+    // Si contiene nombre de lugar /place/Lugar/...
+    const placeMatch = url.match(/\/place\/([^\/]+)/);
+    if (placeMatch) {
+      const query = placeMatch[1].replace(/\+/g, ' ');
+      return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&hl=es&z=16&output=embed`;
+    }
+
+    // Fallback general agregando output=embed
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}output=embed`;
+  }
+
   cfgMap?.addEventListener('input', () => {
     let url = cfgMap.value.trim();
     // Si el usuario pegó el iframe completo (<iframe src="..."), extraer automáticamente el enlace src
