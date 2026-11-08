@@ -18,7 +18,7 @@ const whatsappNumber = settings.whatsapp_number;
       <span class="eyebrow text-cyan-600">Presupuesto en 1 Minuto</span>
       <h2 class="section-title text-slate-900">Cotizador Interactivo Express</h2>
       <p class="section-lead">
-        Elige tu tipo de trabajo y medidas aproximadas. Te generamos al instante el mensaje listo para enviar por WhatsApp sin que tengas que redactar nada.
+        Elige tu tipo de trabajo, material y medidas aproximadas. Te generamos al instante el mensaje listo para enviar por WhatsApp sin que tengas que redactar nada.
       </p>
     </div>
 
@@ -40,9 +40,9 @@ const whatsappNumber = settings.whatsapp_number;
             <span class="text-xs sm:text-sm font-semibold text-slate-800">Ventana / Cancelería</span>
           </button>
 
-          <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Barandal de Cristal">
+          <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Barandal de Cristal (9.5mm / 12mm)">
             <span class="mb-2 text-2xl">🪜</span>
-            <span class="text-xs sm:text-sm font-semibold text-slate-800">Barandal</span>
+            <span class="text-xs sm:text-sm font-semibold text-slate-800">Barandal (9.5-12mm)</span>
           </button>
 
           <button type="button" class="opt-btn project-opt group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-4 text-center transition-all duration-300 ease-premium hover:border-cyan-500 hover:shadow-md cursor-pointer" data-val="Domo / Tragaluz">
@@ -57,23 +57,35 @@ const whatsappNumber = settings.whatsapp_number;
         </div>
       </div>
 
-      <!-- Paso 2: Tipo de Vidrio -->
+      <!-- Paso 2: Tipo de Vidrio o Acabado -->
       <div class="mb-8">
         <label class="mb-3 block text-sm font-bold tracking-wide uppercase text-slate-700">
-          2. Tipo de cristal o acabado
+          2. Tipo de cristal o acabado de aluminio
         </label>
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-4" id="glass-options">
-          <button type="button" class="opt-btn glass-opt active rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Templado Claro (6mm a 9.5mm)">
-            ✨ Templado Claro
+          <button type="button" class="opt-btn glass-opt active rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Cristal Claro (3mm a 12mm)">
+            ✨ Cristal Claro
           </button>
-          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Esmerilado / Satinado (Privacidad)">
-            🌫️ Esmerilado / Satinado
-          </button>
-          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Tintado / Filtrasol / Tintex">
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Filtrasol / Tintex (Control Solar)">
             🕶️ Filtrasol / Tintex
           </button>
-          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Asesoría requerida (No estoy seguro)">
-            💬 Requiero Asesoría
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Satinovo (Esmerilado / Privacidad)">
+            🌫️ Satinovo
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Bronce o Cristal Azul">
+            🔷 Bronce / Azul
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Cristal Inastillable (Laminado)">
+            🛡️ Inastillable
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Cristal Duovent (Térmico/Acústico)">
+            ❄️ Duovent
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Con Aluminio Sublimado Color Madera">
+            🪵 Sublimado Madera
+          </button>
+          <button type="button" class="opt-btn glass-opt rounded-xl border border-slate-200 bg-white p-3.5 text-center text-xs sm:text-sm font-semibold text-slate-800 transition-all duration-300 ease-premium hover:border-cyan-500 cursor-pointer" data-val="Asesoría requerida (Otro tono / calibre)">
+            💬 Otro / Asesoría
           </button>
         </div>
       </div>
@@ -124,12 +136,12 @@ const whatsappNumber = settings.whatsapp_number;
         </div>
 
         <div class="mt-4">
-          <label for="calc-notes" class="block text-xs font-semibold text-slate-600 mb-1">Detalle o color de herrajes (Opcional)</label>
+          <label for="calc-notes" class="block text-xs font-semibold text-slate-600 mb-1">Detalle, calibre o color de aluminio/madera (Opcional)</label>
           <input 
             type="text" 
             id="calc-notes" 
             class="input-field text-sm" 
-            placeholder="Ej. Herrajes negros mate, con toallero, instalación en planta alta..."
+            placeholder="Ej. Cristal de 6mm, aluminio sublimado nogal, herrajes negros..."
           />
         </div>
       </div>
@@ -185,7 +197,7 @@ const whatsappNumber = settings.whatsapp_number;
   import { getCachedSiteSettings } from '../lib/settings';
 
   let selectedProject = "Cancel de Baño";
-  let selectedGlass = "Templado Claro (6mm a 9.5mm)";
+  let selectedGlass = "Cristal Claro (3mm a 12mm)";
 
   const projectButtons = document.querySelectorAll<HTMLButtonElement>('.project-opt');
   const glassButtons = document.querySelectorAll<HTMLButtonElement>('.glass-opt');
@@ -220,7 +232,7 @@ const whatsappNumber = settings.whatsapp_number;
 
     let message = `¡Hola! Me gustaría cotizar un proyecto desde su sitio web:\n\n`;
     message += `📐 Proyecto: ${selectedProject}\n`;
-    message += `💎 Cristal: ${selectedGlass}\n`;
+    message += `💎 Material / Acabado: ${selectedGlass}\n`;
     message += `📏 Medidas aprox: ${width}m (ancho) x ${height}m (alto) [aprox. ${area} m²]\n`;
     
     if (notes) {
@@ -249,7 +261,7 @@ const whatsappNumber = settings.whatsapp_number;
 
   glassButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      selectedGlass = btn.dataset.val || "Templado Claro";
+      selectedGlass = btn.dataset.val || "Cristal Claro (3mm a 12mm)";
       updateActiveClasses(glassButtons, selectedGlass);
       updatePreview();
     });

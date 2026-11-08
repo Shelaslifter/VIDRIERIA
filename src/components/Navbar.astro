@@ -10,6 +10,7 @@ interface NavLink {
 const links: NavLink[] = [
   { label: 'Inicio', href: '/#inicio' },
   { label: 'Servicios', href: '/#servicios' },
+  { label: 'Materiales', href: '/#materiales' },
   { label: 'Cotizador', href: '/#cotizador' },
   { label: 'Proyectos', href: '/#proyectos' },
   { label: 'Contacto', href: '/contacto' },
@@ -26,7 +27,7 @@ const links: NavLink[] = [
       <Logo />
 
       <!-- Desktop Menu -->
-      <nav class="hidden items-center gap-10 md:flex" aria-label="Principal">
+      <nav class="hidden items-center gap-8 lg:gap-10 md:flex" aria-label="Principal">
         {links.map((link) => (
           <a
             href={link.href}
