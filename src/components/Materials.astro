@@ -1,0 +1,428 @@
+---
+// Materials.astro - Catálogo de Cristales, Calibres y Sublimado en Madera
+import { getSiteSettings } from '../lib/settings';
+
+interface GlassColor {
+  name: string;
+  badge: string;
+  description: string;
+  swatchClass: string;
+  ringClass: string;
+}
+
+interface GlassThickness {
+  category: string;
+  subtitle: string;
+  calibres: string[];
+  accent: string;
+}
+
+interface SpecialGlass {
+  title: string;
+  tag: string;
+  description: string;
+  icon: string;
+}
+
+const settings = await getSiteSettings();
+const whatsappNumber = settings.whatsapp_number;
+
+const thicknesses: GlassThickness[] = [
+  {
+    category: 'Cancelería y Ventanería',
+    subtitle: 'Ventanas, puertas corredizas, divisiones y cubiertas',
+    calibres: ['3 mm', '4 mm', '5 mm', '6 mm'],
+    accent: 'cyan',
+  },
+  {
+    category: 'Barandales y Seguridad',
+    subtitle: 'Barandales arquitectónicos, canceles y fachadas templadas',
+    calibres: ['9.5 mm', '12 mm'],
+    accent: 'blue',
+  },
+];
+
+const glassColors: GlassColor[] = [
+  {
+    name: 'Cristal Claro',
+    badge: 'Alta transparencia',
+    description: 'Paso total de luz natural y máxima nitidez visual.',
+    swatchClass: 'bg-linear-to-br from-white via-slate-100 to-cyan-50/80 border-slate-300',
+    ringClass: 'group-hover:ring-slate-300',
+  },
+  {
+    name: 'Filtrasol',
+    badge: 'Control solar',
+    description: 'Tono gris humo elegante que reduce el deslumbramiento y calor.',
+    swatchClass: 'bg-linear-to-br from-slate-600 via-slate-700 to-slate-900 border-slate-500',
+    ringClass: 'group-hover:ring-slate-500',
+  },
+  {
+    name: 'Bronce',
+    badge: 'Cálido arquitectónico',
+    description: 'Matiz ámbar/cobre sofisticado con excelente confort visual.',
+    swatchClass: 'bg-linear-to-br from-amber-700/80 via-amber-800 to-stone-900 border-amber-600/60',
+    ringClass: 'group-hover:ring-amber-600',
+  },
+  {
+    name: 'Cristal Azul',
+    badge: 'Estética moderna',
+    description: 'Acabado azulado contemporáneo ideal para fachadas y domos.',
+    swatchClass: 'bg-linear-to-br from-sky-400 via-blue-600 to-indigo-900 border-sky-400/60',
+    ringClass: 'group-hover:ring-sky-500',
+  },
+  {
+    name: 'Tintex',
+    badge: 'Térmico verde',
+    description: 'Tono verde traslúcido clásico con filtración de rayos UV.',
+    swatchClass: 'bg-linear-to-br from-emerald-400/80 via-teal-600 to-emerald-900 border-teal-400/60',
+    ringClass: 'group-hover:ring-teal-500',
+  },
+  {
+    name: 'Satinovo',
+    badge: 'Máxima privacidad',
+    description: 'Esmerilado suave al ácido que difumina la vista sin perder luz.',
+    swatchClass: 'bg-linear-to-br from-slate-200/90 via-white/95 to-cyan-100/70 backdrop-blur-md border-white',
+    ringClass: 'group-hover:ring-cyan-300',
+  },
+];
+
+const specialGlasses: SpecialGlass[] = [
+  {
+    title: 'Cristal Inastillable',
+    tag: 'Seguridad extrema',
+    description: 'Vidrio laminado de seguridad que en caso de impacto retiene los fragmentos adheridos a su película interna, protegiendo a tu familia o negocio.',
+    icon: `<svg class="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>`,
+  },
+  {
+    title: 'Cristal Duovent',
+    tag: 'Aislamiento térmico y acústico',
+    description: 'Doble acristalamiento hermético con cámara de aire deshidratado que bloquea el ruido exterior y mantiene el clima ideal en el interior.',
+    icon: `<svg class="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" /></svg>`,
+  },
+];
+
+const woodConsultText = encodeURIComponent(
+  '¡Hola DELTALUM! Vi en su página web el muestrario de materiales y me gustaría pedir más información sobre sus tonos de cristal y acabados de aluminio sublimado en color madera.'
+);
+---
+
+<section id="materiales" class="relative overflow-hidden bg-slate-950 py-20 text-white md:py-28 scroll-mt-20">
+  <!-- Luces de fondo ambientales -->
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <div class="absolute -left-24 top-16 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px]"></div>
+    <div class="absolute -right-24 bottom-10 h-96 w-96 rounded-full bg-amber-500/10 blur-[130px]"></div>
+    <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/15 to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+    <!-- Encabezado de la sección -->
+    <div class="mx-auto mb-14 max-w-3xl text-center md:mb-20">
+      <span class="eyebrow text-cyan-400">Catálogo de Materiales y Acabados</span>
+      <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+        Cristales a medida y aluminio en <span class="bg-linear-to-r from-amber-300 via-amber-200 to-cyan-300 bg-clip-text text-transparent">sublimado madera</span>
+      </h2>
+      <p class="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
+        Trabajamos con todos los grosores arquitectónicos, tonalidades de cristal de línea o bajo pedido, y cualquier color de perfilería sublimada tipo madera para tu proyecto.
+      </p>
+    </div>
+
+    <!-- Layout Principal: 12 columnas en Desktop -->
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch">
+      
+      <!-- COLUMNA IZQUIERDA (7 cols): Cristales, Espesores, Colores y Especialidades -->
+      <div class="flex flex-col justify-between rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl sm:p-8 lg:col-span-7">
+        <div>
+          <!-- Header de bloque de Cristales -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5">
+            <div class="flex items-center gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-400 ring-1 ring-cyan-500/30">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white sm:text-2xl">Variedad de Cristales y Calibres</h3>
+                <p class="text-xs text-slate-400 sm:text-sm">Espesores exactos según la exigencia estructural de tu obra</p>
+              </div>
+            </div>
+            <span class="rounded-full bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-300 ring-1 ring-cyan-400/25">
+              Corte y Templado a Medida
+            </span>
+          </div>
+
+          <!-- 1. Espesores / Grosores -->
+          <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {thicknesses.map((item) => (
+              <div class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 transition-colors hover:border-cyan-500/30">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">{item.category}</span>
+                </div>
+                <p class="mt-1 text-xs text-slate-400">{item.subtitle}</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {item.calibres.map((cal) => (
+                    <span class="inline-flex items-center rounded-xl bg-white/10 px-3 py-1.5 text-sm font-extrabold text-white ring-1 ring-white/15">
+                      {cal}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <!-- 2. Colores y Tonalidades -->
+          <div class="mt-7">
+            <div class="mb-3.5 flex flex-wrap items-center justify-between gap-2">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                Colores y Acabados en Cristal Disponibles
+              </h4>
+              <span class="text-xs text-cyan-400">6 tonos de línea + colores especiales</span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+              {glassColors.map((color) => (
+                <div class={`group flex items-start gap-3 rounded-2xl border border-white/10 bg-slate-900/50 p-3.5 transition-all duration-300 hover:bg-slate-900/90 hover:ring-1 ${color.ringClass}`}>
+                  <div class={`h-10 w-10 shrink-0 rounded-xl border shadow-inner transition-transform duration-300 group-hover:scale-105 ${color.swatchClass}`}></div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <p class="truncate text-sm font-bold text-white">{color.name}</p>
+                    </div>
+                    <span class="inline-block text-[10px] font-semibold uppercase tracking-wide text-cyan-400/90">
+                      {color.badge}
+                    </span>
+                    <p class="mt-1 text-xs leading-snug text-slate-400">
+                      {color.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <!-- Nota de cualquier otro color -->
+            <div class="mt-3.5 flex items-center gap-3 rounded-xl border border-cyan-500/25 bg-cyan-500/10 px-4 py-2.5 text-xs text-cyan-100 sm:text-sm">
+              <svg class="h-5 w-5 shrink-0 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>
+                <strong>¿Buscas cualquier otro color o acabado especial?</strong> Pregúntanos para más información, también lo manejamos sobre pedido.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Cristales Especiales: Inastillable y Duovent -->
+        <div class="mt-7 border-t border-white/10 pt-6">
+          <h4 class="mb-3.5 text-xs font-bold uppercase tracking-wider text-slate-300">
+            Cristales Especiales de Alto Desempeño
+          </h4>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {specialGlasses.map((sp) => (
+              <div class="flex flex-col justify-between rounded-2xl border border-cyan-500/20 bg-linear-to-br from-slate-900/90 via-slate-900/60 to-cyan-950/30 p-4">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-500/15 ring-1 ring-cyan-500/30">
+                      <Fragment set:html={sp.icon} />
+                    </div>
+                    <div>
+                      <h5 class="text-base font-bold text-white">{sp.title}</h5>
+                      <span class="text-[11px] font-semibold text-cyan-400">{sp.tag}</span>
+                    </div>
+                  </div>
+                  <p class="mt-3 text-xs leading-relaxed text-slate-300">
+                    {sp.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA (5 cols): Sublimado en Color Madera (Con Imagen Real + Modal Zoom) -->
+      <div class="flex flex-col justify-between overflow-hidden rounded-[2rem] border border-amber-400/25 bg-linear-to-b from-stone-900/90 via-slate-900/95 to-slate-950 p-6 shadow-2xl sm:p-8 lg:col-span-5">
+        <div>
+          <!-- Badge Superior -->
+          <div class="inline-flex items-center gap-2 rounded-full bg-amber-500/15 px-3.5 py-1 text-xs font-bold text-amber-300 ring-1 ring-amber-400/30">
+            <span class="h-2 w-2 rounded-full bg-amber-400"></span>
+            Acabado Premium en Aluminio
+          </div>
+
+          <h3 class="mt-4 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+            Sublimado en Color Madera
+          </h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-300">
+            Manejamos <strong>cualquier tipo de proyecto</strong> con <strong>cualquier tono de sublimado en color madera</strong>. Obtén la calidez y veta real de la madera fina con la durabilidad eterna del aluminio libre de mantenimiento.
+          </p>
+
+          <!-- Fotografía Real del Muestrario de Madera -->
+          <div class="group relative mt-6 overflow-hidden rounded-2xl border border-white/15 bg-slate-950 shadow-xl">
+            <button
+              type="button"
+              id="open-wood-modal"
+              class="relative block w-full cursor-pointer text-left focus:outline-none"
+              aria-label="Ver muestrario completo de sublimado en color madera"
+            >
+              <img
+                src="/images/muestrario-sublimado-madera.jpg"
+                alt="Muestrario real de perfiles de aluminio con sublimado en color madera de DELTALUM"
+                class="h-72 w-full object-cover object-center transition-transform duration-700 group-hover:scale-105 sm:h-80"
+                loading="lazy"
+              />
+              <div class=" inset-0 absolute bg-linear-to-t from-slate-950/90 via-slate-950/20 to-transparent"></div>
+
+              <div class="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
+                <div>
+                  <span class="inline-block rounded-md bg-amber-500/90 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-950">
+                    Muestrario Físico Real
+                  </span>
+                  <p class="mt-1 text-sm font-bold text-white drop-shadow">
+                    Amplia gama de vetas y tonos de madera
+                  </p>
+                </div>
+                <span class="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-white/15 px-3 py-2 text-xs font-semibold text-white ring-1 ring-white/25 backdrop-blur-md transition-colors group-hover:bg-amber-400 group-hover:text-slate-950">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                  Ampliar
+                </span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Lista de beneficios y usos -->
+          <ul class="mt-6 space-y-2.5 text-xs text-slate-300 sm:text-sm">
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span><strong>Tonos disponibles:</strong> Nogal, Roble, Encino, Caoba, Cerezo, Tzalam, Teca, maderas claras, grisáceas y oscuras.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span><strong>Para cualquier proyecto:</strong> Ventanas corredizas o proyectables, puertas residenciales, cancelería europea y fachadas.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span><strong>Resistencia superior:</strong> No requiere barniz, no se deforma con el sol ni la humedad.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- CTA Directo -->
+        <div class="mt-7 pt-4 border-t border-white/10">
+          <a
+            id="materials-wa-btn"
+            data-wa-number={whatsappNumber}
+            href={`https://wa.me/${whatsappNumber}?text=${woodConsultText}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-linear-to-r from-amber-400 to-amber-500 px-5 py-3.5 text-sm font-extrabold text-slate-950 shadow-lg shadow-amber-500/20 transition-all hover:from-amber-300 hover:to-amber-400 active:scale-[0.99]"
+          >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.815 11.815 0 018.413 3.487 11.821 11.821 0 013.48 8.413c-.003 6.558-5.339 11.893-11.893 11.893h-.005a11.882 11.882 0 01-5.683-1.448L.057 24z" />
+            </svg>
+            <span>Preguntar por colores de cristal o madera</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Lightbox para ver el muestrario de sublimado madera en grande -->
+  <div
+    id="wood-modal"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/90 p-4 backdrop-blur-md"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="wood-modal-title"
+  >
+    <div class="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-white/15 bg-slate-900 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-amber-400">Muestrario Físico DELTALUM</span>
+          <h4 id="wood-modal-title" class="text-base font-bold text-white sm:text-lg">
+            Perfiles de Aluminio Sublimado en Color Madera
+          </h4>
+        </div>
+        <button
+          type="button"
+          id="close-wood-modal"
+          class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-slate-300 transition-colors hover:bg-white/20 hover:text-white cursor-pointer"
+          aria-label="Cerrar vista ampliada"
+        >
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="overflow-y-auto p-4 sm:p-6 text-center">
+        <img
+          src="/images/muestrario-sublimado-madera.jpg"
+          alt="Muestrario completo de colores de sublimado tipo madera en aluminio"
+          class="mx-auto max-h-[70vh] w-auto rounded-2xl object-contain shadow-lg ring-1 ring-white/10"
+        />
+        <p class="mt-4 text-xs text-slate-300 sm:text-sm">
+          Te llevamos el muestrario físico a domicilio o puedes visitarnos en nuestro taller para elegir el tono exacto para tu proyecto.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { getCachedSiteSettings } from '../lib/settings';
+
+  const openWoodBtn = document.getElementById('open-wood-modal');
+  const closeWoodBtn = document.getElementById('close-wood-modal');
+  const woodModal = document.getElementById('wood-modal');
+  const waBtn = document.getElementById('materials-wa-btn') as HTMLAnchorElement | null;
+
+  // Mover el modal a document.body para evitar recorte por contenedores con transform/data-aos
+  if (woodModal && woodModal.parentElement !== document.body) {
+    document.body.appendChild(woodModal);
+  }
+
+  function toggleWoodModal(show: boolean) {
+    if (!woodModal) return;
+    if (show) {
+      woodModal.classList.remove('hidden');
+      woodModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    } else {
+      woodModal.classList.add('hidden');
+      woodModal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  }
+
+  openWoodBtn?.addEventListener('click', () => toggleWoodModal(true));
+  closeWoodBtn?.addEventListener('click', () => toggleWoodModal(false));
+  woodModal?.addEventListener('click', (e) => {
+    if (e.target === woodModal) toggleWoodModal(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && woodModal && !woodModal.classList.contains('hidden')) {
+      toggleWoodModal(false);
+    }
+  });
+
+  async function syncMaterialsWa() {
+    try {
+      const settings = await getCachedSiteSettings();
+      if (settings?.whatsapp_number && waBtn) {
+        const text = encodeURIComponent(
+          '¡Hola DELTALUM! Vi en su página web el muestrario de materiales y me gustaría pedir más información sobre sus tonos de cristal y acabados de aluminio sublimado en color madera.'
+        );
+        waBtn.href = `https://wa.me/${settings.whatsapp_number}?text=${text}`;
+      }
+    } catch (e) {}
+  }
+
+  syncMaterialsWa();
+</script>
