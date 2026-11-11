@@ -1,25 +1,177 @@
 ---
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
+import { getSiteSettings } from '../lib/settings';
 
 interface Props {
 	title: string;
 	description?: string;
+	canonicalPath?: string;
 }
 
-const { title, description = "DELTALUM - Más de 18 años como expertos en vidrio templado y aluminio en San Luis Potosí. Canceles de baño, ventanas, barandales, domos y fachadas. Cotización sin costo y 1 año de garantía." } = Astro.props;
+const settings = await getSiteSettings();
+
+const {
+	title,
+	description = "DELTALUM - Taller Certificado por Cuprum en Líneas Europeas. Más de 18 años como expertos en vidrio templado y aluminio en San Luis Potosí: canceles de baño, ventanas Eurovent, barandales de 9.5 y 12mm, domos, cristal Duovent, inastillable y aluminio sublimado color madera. Cotización sin costo.",
+	canonicalPath = Astro.url.pathname,
+} = Astro.props;
+
+const siteUrl = 'https://deltalum.vercel.app';
+const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+const ogImageUrl = `${siteUrl}/logo-deltalum.png`;
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "HomeAndConstructionBusiness",
+	"@id": `${siteUrl}/#business`,
+	"name": "DELTALUM - Vidrio Templado y Aluminio en San Luis Potosí",
+	"alternateName": "DELTALUM Cancelería y Cristal Templado SLP",
+	"description": description,
+	"url": siteUrl,
+	"logo": `${siteUrl}/logo-deltalum.png`,
+	"image": [
+		`${siteUrl}/logo-deltalum.png`,
+		`${siteUrl}/images/muestrario-sublimado-madera.jpg`
+	],
+	"telephone": `+52-${settings.phone_display?.replace(/\s+/g, '-') || '444-135-3312'}`,
+	"email": settings.email || "deltalum10@gmail.com",
+	"priceRange": "$$",
+	"currenciesAccepted": "MXN",
+	"paymentAccepted": "Efectivo, Transferencia Bancaria, Depósito",
+	"address": {
+		"@type": "PostalAddress",
+		"streetAddress": "Av. del Centeno # 219-B (entre Sorgo), Col. Molinos del Rey",
+		"addressLocality": "San Luis Potosí",
+		"addressRegion": "S.L.P.",
+		"postalCode": "78100",
+		"addressCountry": "MX"
+	},
+	"geo": {
+		"@type": "GeoCoordinates",
+		"latitude": 22.2169526,
+		"longitude": -100.9785857
+	},
+	"hasMap": "https://www.google.com/maps/dir/?api=1&destination=22.2169526,-100.9785857",
+	"openingHoursSpecification": [
+		{
+			"@type": "OpeningHoursSpecification",
+			"dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+			"opens": "09:00",
+			"closes": "18:00"
+		},
+		{
+			"@type": "OpeningHoursSpecification",
+			"dayOfWeek": "Saturday",
+			"opens": "09:00",
+			"closes": "14:00"
+		}
+	],
+	"areaServed": [
+		{
+			"@type": "City",
+			"name": "San Luis Potosí"
+		},
+		{
+			"@type": "City",
+			"name": "Soledad de Graciano Sánchez"
+		},
+		{
+			"@type": "AdministrativeArea",
+			"name": "Villa de Pozos, San Luis Potosí"
+		}
+	],
+	"knowsAbout": [
+		"Vidrio templado en San Luis Potosí",
+		"Canceles de baño de cristal templado",
+		"Cancelería de aluminio líneas europeas Cuprum Eurovent",
+		"Barandales de cristal templado 9.5mm y 12mm",
+		"Aluminio sublimado en color madera",
+		"Cristal Duovent doble acristalamiento térmico y acústico",
+		"Cristal inastillable laminado de seguridad",
+		"Domos y tragaluces de cristal"
+	],
+	"hasOfferCatalog": {
+		"@type": "OfferCatalog",
+		"name": "Servicios de Vidriería y Cancelería de Aluminio en San Luis Potosí",
+		"itemListElement": [
+			{
+				"@type": "Offer",
+				"itemOffered": {
+					"@type": "Service",
+					"name": "Canceles de Baño en Vidrio Templado (Claro, Satinovo, Filtrasol, Tintex, Bronce)"
+				}
+			},
+			{
+				"@type": "Offer",
+				"itemOffered": {
+					"@type": "Service",
+					"name": "Ventanas y Cancelería de Aluminio Certificado Cuprum en Líneas Europeas y Sublimado Madera"
+				}
+			},
+			{
+				"@type": "Offer",
+				"itemOffered": {
+					"@type": "Service",
+					"name": "Barandales de Cristal Templado de Seguridad en 9.5mm y 12mm"
+				}
+			},
+			{
+				"@type": "Offer",
+				"itemOffered": {
+					"@type": "Service",
+					"name": "Domos, Fachadas y Cristales Especiales (Duovent e Inastillable)"
+				}
+			}
+		]
+	}
+};
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang="es-MX" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#020617" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
+
+		<!-- SEO Principal y Palabras Clave Locales (San Luis Potosí) -->
 		<title>{title} | Vidrios y Aluminio en San Luis Potosí</title>
+		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="vidrieria san luis potosi, vidrio templado san luis potosi, canceles de baño slp, canceleria de aluminio san luis potosi, ventanas eurovent cuprum slp, barandales de cristal templado slp, aluminio sublimado madera, cristal duovent san luis potosi, cristal inastillable, domos de cristal slp, deltalum"
+		/>
+		<meta name="author" content="DELTALUM - Vidrio Templado y Aluminio" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+		<!-- Geolocalización para SEO Local en San Luis Potosí -->
+		<meta name="geo.region" content="MX-SLP" />
+		<meta name="geo.placename" content="San Luis Potosí, S.L.P., México" />
+		<meta name="geo.position" content="22.2169526;-100.9785857" />
+		<meta name="ICBM" content="22.2169526, -100.9785857" />
+
+		<!-- Open Graph / WhatsApp / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_MX" />
+		<meta property="og:site_name" content="DELTALUM Vidrio y Aluminio SLP" />
+		<meta property="og:title" content={`${title} | Vidrios y Aluminio en San Luis Potosí`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:alt" content="DELTALUM - Taller Certificado en Vidrio Templado y Aluminio en San Luis Potosí" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={`${title} | Vidrios y Aluminio en San Luis Potosí`} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- Schema.org JSON-LD para Google LocalBusiness -->
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
 		<!-- Tipografía premium -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
